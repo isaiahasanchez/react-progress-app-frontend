@@ -7,7 +7,7 @@ const NavBar = () => {
   return (
     <Navbar bg='dark' variant='dark' expand='lg' className='px-3'>
         <LinkContainer to="/">
-            <Navbar.Brand> My Blog</Navbar.Brand>
+            <Navbar.Brand> Progress Exercise Log</Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
@@ -16,7 +16,7 @@ const NavBar = () => {
                 <Nav.Link>Home</Nav.Link>
                 </LinkContainer>
                 <LinkContainer to="/posts/new">
-                <Nav.Link>Create Post</Nav.Link>
+                <Nav.Link>Create New Exercise</Nav.Link>
                 </LinkContainer>
             </Nav>
         </Navbar.Collapse>

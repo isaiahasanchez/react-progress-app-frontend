@@ -6,10 +6,10 @@ import { Card, Container } from 'react-bootstrap'
 
 const PostPage = () => {
     const [post, setPost] = useState({
-        title: '',
-        author: '',
+        exercise: '',
+        equipment: '',
         image: '',
-        content: '',
+        sets: '',
     })
 
     const {id} = useParams()
@@ -25,12 +25,12 @@ const PostPage = () => {
     <Container className='mt-4'>
         <Card>
             <div style= {{maxHeight: '500px', overflow: 'hidden'}}>
-            <Card.Img className='img-fluid' variant= 'top' src={post.image} alt={post.title} />
+            <Card.Img className='img-fluid' variant= 'top' src={post.image} alt={post.exercise} />
             </div> 
             <Card.Body>
-                <Card.Title>{post.title}</Card.Title>
-                <Card.Subtitle className='mb-2 text-muted'> By: {post.author}</Card.Subtitle>
-                <Card.Text>{post.content}</Card.Text>
+                <Card.Title>{post.exercise}</Card.Title>
+                <Card.Subtitle className='mb-2 text-muted'> Equipment: {post.equipment}</Card.Subtitle>
+                <Card.Text>Sets: {post.sets}</Card.Text>
             </Card.Body>
         </Card>
     </Container>

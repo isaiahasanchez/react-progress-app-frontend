@@ -5,10 +5,10 @@ import { Form, Button, Container } from 'react-bootstrap'
 
 const NewPostPage = () => {
     const [post, setPost] = useState({
-        title: '',
-        author: '',
+        exercise: '',
+        equipment: '',
         image: '',
-        content: '',
+        sets: '',
     })
 
     const navigate = useNavigate()
@@ -26,12 +26,12 @@ const NewPostPage = () => {
     <Container className='mt-4'>
         <Form onSubmit={handleSubmit}>
             <Form.Group>
-                <Form.Label> Title</Form.Label>
-                <Form.Control type='text' name='title' placeholder='Title' onChange={handleChange} />
+                <Form.Label> Exercise</Form.Label>
+                <Form.Control type='text' name='exercise' placeholder='Exercise' onChange={handleChange} />
             </Form.Group>
             <Form.Group>
-                <Form.Label> Author</Form.Label>
-                <Form.Control type='text' name='author' placeholder='Author' onChange={handleChange} />
+                <Form.Label> Equipment</Form.Label>
+                <Form.Control type='text' name='equipment' placeholder='Equipment' onChange={handleChange} />
                 
             </Form.Group>
             <Form.Group>
@@ -40,8 +40,8 @@ const NewPostPage = () => {
 
             </Form.Group>
             <Form.Group>
-                <Form.Label> Content</Form.Label>
-                <Form.Control as='textarea' rows={12}name='content' placeholder='Content' onChange={handleChange} required/>
+                <Form.Label> Sets</Form.Label>
+                <Form.Control as='textarea' rows={12}name='sets' placeholder='Sets' onChange={handleChange} required/>
             </Form.Group>
             <Button variant='primary' type='submit'>
                 Create 

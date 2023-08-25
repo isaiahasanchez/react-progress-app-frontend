@@ -33,11 +33,11 @@ const HomePage = () => {
                 className="img-fluid"
                 variant="top"
                 src={post.image}
-                alt={post.title}
+                alt={post.exercise}
               />
               <Card.Body>
-                <Card.Title>{post.title}</Card.Title>
-                <Card.Text>{post.author}</Card.Text>
+                <Card.Title>{post.exercise}</Card.Title>
+                <Card.Text>{post.equipment}</Card.Text>
                 <Link to={`/posts/${post._id}`}>
                     <Button variant='primary' className='mr-2'> Read More</Button>
                 </Link>
