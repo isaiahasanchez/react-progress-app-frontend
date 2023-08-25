@@ -3,8 +3,10 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Card, Button, Container, Row, Col } from 'react-bootstrap'
 
+
 const HomePage = () => {
     const[posts, setPosts] = useState([])
+    // const[editing, setEditing] = useState(false)
 
 
     useEffect(() => {
@@ -23,6 +25,19 @@ const HomePage = () => {
             console.error('error deleting post', error)
         }
     }
+
+    const toggleEditMode = (id) => {
+      setPosts(prevPosts => 
+          prevPosts.map(post => 
+              post._id === id ? { ...post, editMode: !post.editMode } : post
+          )
+      );
+  };
+  
+
+
+
+
   return (
     <Container>
       <Row>
@@ -35,6 +50,9 @@ const HomePage = () => {
                 src={post.image}
                 alt={post.exercise}
               />
+              {post.editMode ? (
+                <div>Edit mode content here</div>
+              ) : (
               <Card.Body>
                 <Card.Title>{post.exercise}</Card.Title>
                 <Card.Text>{post.equipment}</Card.Text>
@@ -44,7 +62,11 @@ const HomePage = () => {
                     <Button variant='danger' onClick={()=> handleDelete(post._id)}>
                         Delete
                     </Button>
+                    <Button variant="secondary" onClick={()=> toggleEditMode(post._id)} >
+                      Edit
+                    </Button>
               </Card.Body>
+              )}
             </Card>
           </Col>
         ))}
