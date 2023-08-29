@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { Card, Button, Container, Row, Col } from 'react-bootstrap'
+import { Card, Button, Container, Row, Col, Form } from 'react-bootstrap'
 
 
 const HomePage = () => {
@@ -34,7 +34,13 @@ const HomePage = () => {
       );
   };
   
-
+ const handleChange = (e, id) => {
+      setPosts(prevPosts =>
+          prevPosts.map(post =>
+              post._id === id ? { ...post, [e.target.name]: e.target.value } : post
+          )
+      );
+  };
 
 
 
@@ -51,7 +57,23 @@ const HomePage = () => {
                 alt={post.exercise}
               />
               {post.editMode ? (
-                <div>Edit mode content here</div>
+                <>
+                <Form>
+                  <Form.Group>
+                    <Form.Label>Exercise</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="exercise"
+                      placeholder="Exercise"
+                      value={post.exercise}
+                      onChange={(e) => handleChange(e, post._id)}
+                    />
+                  </Form.Group>
+                </Form>
+                <Button variant="secondary" onClick={()=> toggleEditMode(post._id)} >
+                Toggle Edit
+              </Button>
+              </>
               ) : (
               <Card.Body>
                 <Card.Title>{post.exercise}</Card.Title>
