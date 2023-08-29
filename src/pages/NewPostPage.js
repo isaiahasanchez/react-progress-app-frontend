@@ -9,6 +9,7 @@ const NewPostPage = () => {
         equipment: '',
         image: '',
         sets: '',
+        editMode: false,
     })
 
     const navigate = useNavigate()
