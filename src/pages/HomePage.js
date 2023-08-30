@@ -42,6 +42,20 @@ const HomePage = () => {
       );
   };
 
+  const handleSave = async (id) => {
+    try {
+        const postToUpdate = posts.find((post) => post._id === id);
+        const response = await axios.put(`http://localhost:5500/posts/${id}`, postToUpdate);
+        
+        // Check the response and log it
+        console.log('Response from server:', response.data);
+
+        // Exit edit mode after saving
+        toggleEditMode(id);
+    } catch (error) {
+        console.error('Error updating post:', error);
+    }
+};
 
 
   return (
@@ -69,10 +83,19 @@ const HomePage = () => {
                       onChange={(e) => handleChange(e, post._id)}
                     />
                   </Form.Group>
+                  <Button
+                      variant="primary"
+                      onClick={() => handleSave(post._id)}
+                    >
+                      Save Changes
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => toggleEditMode(post._id)}
+                    >
+                      Cancel
+                    </Button>
                 </Form>
-                <Button variant="secondary" onClick={()=> toggleEditMode(post._id)} >
-                Toggle Edit
-              </Button>
               </>
               ) : (
               <Card.Body>
