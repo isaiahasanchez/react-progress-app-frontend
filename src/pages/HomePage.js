@@ -99,7 +99,7 @@ const HomePage = () => {
                 <Card.Body>
                   <Card.Title>{post.exercise}</Card.Title>
                   <Card.Text>{post.equipment}</Card.Text>
-                  <Card.Text>{post.sets}</Card.Text>
+                  <Card.Text style={{ whiteSpace: 'pre-line' }}>{post.sets}</Card.Text>
                   <Link to={`/posts/${post._id}`}>
                     <Button variant='primary' className='mr-2'> Read More</Button>
                   </Link>
