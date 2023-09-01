@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Button, Container, Row, Col, Form } from 'react-bootstrap';
 import apiService from '../api/apiService';
+import PostCard from '../components/PostCard';  
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
@@ -71,62 +72,19 @@ const HomePage = () => {
 
   return (
     <Container>
-      <Row>
-        {posts.map(post => (
-          <Col md={4} className="mb-4" key={post._id}>
-            <Card style={{ width: '18rem' }}>
-              <Card.Img
-                className="img-fluid"
-                variant="top"
-                src={post.image}
-                alt={post.exercise}
-              />
-              {post.editMode ? (
-                <Form>
-                  <Form.Group>
-                    <Form.Label>Exercise</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="exercise"
-                      value={post.exercise}
-                      onChange={(e) => handleChange(e, post._id)}
-                    />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Label>Sets</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={5}
-                      name="sets"
-                      value={post.sets}
-                      onChange={(e) => handleChange(e, post._id)}
-                    />
-                  </Form.Group>
-                  <Button variant="primary" onClick={() => handleSave(post._id)}>
-                    Save Changes
-                  </Button>
-                  {/* <Button variant="secondary" onClick={() => toggleEditMode(post._id)}>
-                    Cancel
-                  </Button> */}
-                </Form>
-              ) : (
-                <Card.Body>
-                  <Card.Title>{post.exercise}</Card.Title>
-                  <Card.Text>{post.equipment}</Card.Text>
-                  <Card.Text>Last Edited: {new Date(post.lastDateEdited).toLocaleString()}</Card.Text>
-                  <Card.Text style={{ whiteSpace: 'pre-line' }}>{post.sets}</Card.Text>
-                  <Link to={`/posts/${post._id}`}>
-                    <Button variant='primary' className='mr-2'> Read More</Button>
-                  </Link>
-                  <Button variant='danger' onClick={() => handleDelete(post._id)}>Delete</Button>
-                  <Button variant='secondary' onClick={() => toggleEditMode(post._id)}>Edit</Button>
-                </Card.Body>
-              )}
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <Row>
+      {posts.map(post => (
+        <PostCard
+          key={post._id}
+          post={post}
+          toggleEditMode={toggleEditMode}
+          handleChange={handleChange}
+          handleSave={handleSave}
+          handleDelete={handleDelete}
+        />
+      ))}
+    </Row>
+  </Container>
   );
 };
 
