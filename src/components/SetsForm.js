@@ -1,41 +1,35 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 
-const SetsForm = ({ weight, reps, sets, handleChange }) => {
-  return (
-    <div>
-      <Form.Group>
-        <Form.Label>Weight</Form.Label>
-        <Form.Control
-          type="number"
-          name="weight"
-          value={weight}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>Reps</Form.Label>
-        <Form.Control
-          type="number"
-          name="reps"
-          value={reps}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>Sets</Form.Label>
-        <Form.Control
-          type="number"
-          name="sets"
-          value={sets}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
-    </div>
-  );
+const SetsForm = ({ weight, reps, index, handleChange }) => {
+    return (
+        <Row className="d-flex justify-content-between">
+            <Col>
+                <Form.Group>
+                    <Form.Label>Weight</Form.Label>
+                    <Form.Control
+                        type='number'
+                        name='weight'
+                        value={weight}
+                        placeholder='Weight'
+                        onChange={(e) => handleChange(e, index)}
+                    />
+                </Form.Group>
+            </Col>
+            <Col>
+                <Form.Group>
+                    <Form.Label>Reps</Form.Label>
+                    <Form.Control
+                        type='number'
+                        name='reps'
+                        value={reps}
+                        placeholder='Reps'
+                        onChange={(e) => handleChange(e, index)}
+                    />
+                </Form.Group>
+            </Col>
+        </Row>
+    );
 };
 
 export default SetsForm;

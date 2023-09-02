@@ -1,4 +1,3 @@
-// PostCard.js
 import React from 'react';
 import { Card, Button, Form, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -8,12 +7,6 @@ const PostCard = ({ post, handleChange, handleSave, handleDelete, toggleEditMode
   return (
     <Col md={4} className="mb-4">
       <Card style={{ width: '18rem' }}>
-        {/* <Card.Img
-          className="img-fluid"
-          variant="top"
-          src={post.image}
-          alt={post.exercise}
-        /> */}
         {post.editMode ? (
           <Form>
             <Form.Group>
@@ -22,15 +15,20 @@ const PostCard = ({ post, handleChange, handleSave, handleDelete, toggleEditMode
                 type="text"
                 name="exercise"
                 value={post.exercise}
-                onChange={(e) => handleChange(e, post._id)}
+                onChange={(e) => handleChange(e, post._id, null)}
               />
             </Form.Group>
-            <SetsForm
-                weight={post.weight}
-                reps={post.reps}
-                sets={post.sets}
-                handleChange={(e) => handleChange(e, post._id)}
-            />
+
+            {post.sets.map((set, index) => (
+              <SetsForm
+                key={index}
+                weight={set.weight}
+                reps={set.reps}
+                index={index}
+                handleChange={(e) => handleChange(e, post._id, index)}
+              />
+            ))}
+
             <Button variant="primary" onClick={() => handleSave(post._id)}>
               Save Changes
             </Button>
@@ -40,9 +38,12 @@ const PostCard = ({ post, handleChange, handleSave, handleDelete, toggleEditMode
             <Card.Title>{post.exercise}</Card.Title>
             <Card.Text>{post.equipment}</Card.Text>
             <Card.Text>Last Edited: {new Date(post.lastDateEdited).toLocaleString()}</Card.Text>
-            <Card.Text style={{ whiteSpace: 'pre-line' }}>Weight:{post.weight}</Card.Text>
-            <Card.Text style={{ whiteSpace: 'pre-line' }}>Reps:{post.reps}</Card.Text>
-            <Card.Text style={{ whiteSpace: 'pre-line' }}>Sets:{post.sets}</Card.Text>
+            {post.sets.map((set, index) => (
+              <div key={index} className="d-flex">
+                <p>{set.weight} lbs x </p>
+                <p>{set.reps} reps </p>
+              </div>
+            ))}
             <Link to={`/posts/${post._id}`}>
               <Button variant='primary' className='mr-2'> Read More</Button>
             </Link>

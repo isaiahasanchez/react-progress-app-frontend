@@ -9,17 +9,23 @@ const NewPostPage = () => {
         exercise: '',
         equipment: '',
         image: '',
-        weight: '',
-        reps: '',
-        sets: '',
+        sets: [
+            {weight: '', reps: ''}
+        ],
         editMode: false,
     })
 
     const navigate = useNavigate()
 
-    const handleChange = e => {
-        setPost({...post, [e.target.name]:e.target.value })
-    }
+    const handleChange = (e, index) => {
+        const newSets = [...post.sets];
+        newSets[index][e.target.name] = e.target.value;
+        setPost({ ...post, sets: newSets });
+    };
+
+    const addAnotherSet = () => {
+        setPost({ ...post, sets: [...post.sets, { weight: '', reps: '' }] });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -43,15 +49,21 @@ const NewPostPage = () => {
                 <Form.Control type='text' name='image' placeholder='Image URL' onChange={handleChange} />
 
             </Form.Group>
-            <SetsForm
-                weight={post.weight}
-                reps={post.reps}
-                sets={post.sets}
-                handleChange={handleChange}
-            />
-            <Button variant='primary' type='submit'>
-                Create 
-            </Button>           
+            {post.sets.map((set, index) => (
+                    <SetsForm
+                        key={index}
+                        index={index}
+                        weight={set.weight}
+                        reps={set.reps}
+                        handleChange={handleChange}
+                    />
+                ))}
+                <Button variant="secondary" onClick={addAnotherSet}>
+                    Add Another Set
+                </Button>
+                <Button variant='primary' type='submit'>
+                    Create
+                </Button>          
         </Form>
     </Container>
   )

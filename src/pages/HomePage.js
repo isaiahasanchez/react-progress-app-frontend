@@ -37,12 +37,36 @@ const HomePage = () => {
     )));
   };
 
-  const handleChange = (e, id) => {
+  const handleChange = (e, id, setIndex) => {
     const { name, value } = e.target;
-    setPosts(prevPosts => prevPosts.map(post => (
-      post._id === id ? { ...post, [name]: value } : post
-    )));
+  
+    setPosts(prevPosts => prevPosts.map(post => {
+      if (post._id === id) {
+        // This is the post we want to update
+        if (setIndex !== null) {
+          // We are updating a specific set
+          return {
+            ...post,
+            sets: post.sets.map((set, index) => {
+              if (index === setIndex) {
+                // This is the set we want to update
+                return {
+                  ...set,
+                  [name]: parseFloat(value) // assuming the fields are numbers
+                };
+              }
+              return set; // not the set we want to update, leave it alone
+            })
+          };
+        } else {
+          // Updating a top-level field like 'exercise'
+          return { ...post, [name]: value };
+        }
+      }
+      return post; // not the post we want to update, leave it alone
+    }));
   };
+  
 
   const handleSave = async (id) => {
     const postToUpdate = posts.find(post => post._id === id);
