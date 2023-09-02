@@ -31,7 +31,9 @@ const PostPage = () => {
                 <Card.Title>{post.exercise}</Card.Title>
                 <Card.Subtitle className='mb-2 text-muted'> Equipment: {post.equipment}</Card.Subtitle>
                 <Card.Text>Last Edited: {new Date(post.lastDateEdited).toLocaleString()}</Card.Text>
-                <Card.Text style={{ whiteSpace: 'pre-line' }}>Sets: {post.sets}</Card.Text>
+                <Card.Text style={{ whiteSpace: 'pre-line' }}>Weight: {post.weight}</Card.Text>
+                <Card.Text style={{ whiteSpace: 'pre-line' }}>Reps: {post.reps}</Card.Text>
+                <Card.Text style={{ whiteSpace: 'pre-line' }}>Sets{post.sets}</Card.Text>
             </Card.Body>
         </Card>
     </Container>

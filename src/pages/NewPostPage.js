@@ -2,12 +2,15 @@ import React, {useState} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Form, Button, Container } from 'react-bootstrap'
+import SetsForm from '../components/SetsForm';
 
 const NewPostPage = () => {
     const [post, setPost] = useState({
         exercise: '',
         equipment: '',
         image: '',
+        weight: '',
+        reps: '',
         sets: '',
         editMode: false,
     })
@@ -40,10 +43,12 @@ const NewPostPage = () => {
                 <Form.Control type='text' name='image' placeholder='Image URL' onChange={handleChange} />
 
             </Form.Group>
-            <Form.Group>
-                <Form.Label> Sets</Form.Label>
-                <Form.Control as='textarea' rows={12}name='sets' placeholder='Sets' onChange={handleChange} required/>
-            </Form.Group>
+            <SetsForm
+                weight={post.weight}
+                reps={post.reps}
+                sets={post.sets}
+                handleChange={handleChange}
+            />
             <Button variant='primary' type='submit'>
                 Create 
             </Button>           
