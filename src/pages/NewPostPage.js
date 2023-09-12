@@ -17,11 +17,18 @@ const NewPostPage = () => {
 
     const navigate = useNavigate()
 
-    const handleChange = (e, index) => {
+const handleChange = (e, index) => {
+    if (index !== undefined) {
+        // Handle changes for sets
         const newSets = [...post.sets];
         newSets[index][e.target.name] = e.target.value;
         setPost({ ...post, sets: newSets });
-    };
+    } else {
+        // Handle changes for exercise, equipment, and image
+        setPost({ ...post, [e.target.name]: e.target.value });
+    }
+};
+
 
     const addAnotherSet = () => {
         setPost({ ...post, sets: [...post.sets, { weight: '', reps: '' }] });

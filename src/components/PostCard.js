@@ -20,13 +20,15 @@ const PostCard = ({ post, handleChange, handleSave, handleDelete, toggleEditMode
             </Form.Group>
 
             {post.sets.map((set, index) => (
-              <SetsForm
-                key={index}
-                weight={set.weight}
-                reps={set.reps}
-                index={index}
-                handleChange={(e) => handleChange(e, post._id, index)}
-              />
+              <div key={index} className='d-flex align-items-center mr-3 mb-3'>
+                <SetsForm
+                  weight={set.weight}
+                  reps={set.reps}
+                  index={index}
+                  handleChange={(e) => handleChange(e, post._id, index)}
+                />
+              </div>
+
             ))}
 
             <Button variant="primary" onClick={() => handleSave(post._id)}>
@@ -38,12 +40,9 @@ const PostCard = ({ post, handleChange, handleSave, handleDelete, toggleEditMode
             <Card.Title>{post.exercise}</Card.Title>
             <Card.Text>{post.equipment}</Card.Text>
             <Card.Text>Last Edited: {new Date(post.lastDateEdited).toLocaleString()}</Card.Text>
-            {post.sets.map((set, index) => (
-              <div key={index} className="d-flex">
-                <p>{set.weight} lbs x </p>
-                <p>{set.reps} reps </p>
-              </div>
-            ))}
+            <Card.Text>
+              {post.sets.map((set, index) => `${set.weight} lbs x ${set.reps} reps`).join(', ')}
+            </Card.Text>
             <Link to={`/posts/${post._id}`}>
               <Button variant='primary' className='mr-2'> Read More</Button>
             </Link>
