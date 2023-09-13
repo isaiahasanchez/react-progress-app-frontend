@@ -6,7 +6,7 @@ import SetsForm from './SetsForm';
 const PostCard = ({ post, handleChange, handleSave, handleDelete, toggleEditMode }) => {
   return (
     <Col md={4} className="mb-4">
-      <Card style={{ width: '18rem' }}>
+      <Card style={{ minWidth: '18rem' }}>
         {post.editMode ? (
           <Form>
             <Form.Group>
