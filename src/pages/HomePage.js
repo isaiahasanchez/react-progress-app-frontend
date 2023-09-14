@@ -72,6 +72,7 @@ const HomePage = () => {
 
   return (
     <Container>
+      <h1>Your Exercises</h1>
     <Row>
       {posts.map(post => (
         <PostCard
