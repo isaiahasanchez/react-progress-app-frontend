@@ -96,7 +96,7 @@ const HomePage = () => {
   
 
   return (
-    <Container>
+    <Container className="d-flex flex-column">
     <Row>
       {posts.map(post => (
         <PostCard
