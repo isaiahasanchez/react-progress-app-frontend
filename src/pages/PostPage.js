@@ -24,9 +24,23 @@ const PostPage = () => {
   return (
     <Container className='mt-4'>
         <Card>
-            <div style= {{maxHeight: '500px', overflow: 'hidden'}}>
-            <Card.Img className='img-fluid' variant= 'top' src={post.image} alt={post.exercise} />
-            </div> 
+        <div style={{ 
+            height: '300px', 
+            width: '400px', 
+            overflow: 'hidden'
+        }}>
+            <Card.Img 
+                className='img-fluid' 
+                variant= 'top' 
+                src={post.image} 
+                alt={post.exercise} 
+                style={{ 
+                    objectFit: 'contain', 
+                    maxHeight: '100%', 
+                    maxWidth: '100%' 
+                }}
+            />
+        </div>
             <Card.Body>
                 <Card.Title>{post.exercise}</Card.Title>
                 <Card.Subtitle className='mb-2 text-muted'> Equipment: {post.equipment}</Card.Subtitle>
