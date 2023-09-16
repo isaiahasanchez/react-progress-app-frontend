@@ -39,10 +39,24 @@ const HomePage = () => {
 
   const handleChange = (e, id) => {
     const { name, value } = e.target;
-    setPosts(prevPosts => prevPosts.map(post => (
-      post._id === id ? { ...post, [name]: value } : post
-    )));
-  };
+    setPosts(prevPosts => prevPosts.map(post => {
+        if (post._id === id && name === 'sets') {
+            // Split the existing sets and remove the last 5 lines
+            let lines = post.sets.split('\n');
+            lines.splice(-5); // Remove the last 5 lines
+            
+            // Now add the new sets (which contains the latest 5 lines)
+            lines.push(...value.split('\n'));
+            
+            return { ...post, sets: lines.join('\n') };
+        } else if (post._id === id) {
+            return { ...post, [name]: value };
+        } else {
+            return post;
+        }
+    }));
+};
+
 
   const handleSave = async (id) => {
     const postToUpdate = posts.find(post => post._id === id);

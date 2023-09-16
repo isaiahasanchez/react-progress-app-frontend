@@ -31,13 +31,12 @@ const PostCard = ({ post, handleChange, handleSave, handleDelete, toggleEditMode
 };
 
 
-  
-  
-  
-
   const renderSetsWithDateStyled = (sets) => {
     if (!sets) return '';
   
+    const lines = sets.trim().split('\n');
+    const lastFiveLines = lines.slice(Math.max(lines.length - 5, 0)).join('\n');
+
     // Regular expression to match date patterns.
     const datePattern = /\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2} (AM|PM)/;
   
@@ -64,7 +63,10 @@ const PostCard = ({ post, handleChange, handleSave, handleDelete, toggleEditMode
     });
   }
   
-  
+  const getLastFiveLines = (text) => {
+    const lines = text.trim().split('\n');
+    return lines.slice(Math.max(lines.length - 5, 0)).join('\n');
+}
   
 
   return (
@@ -93,7 +95,7 @@ const PostCard = ({ post, handleChange, handleSave, handleDelete, toggleEditMode
                 as="textarea"
                 rows={5}
                 name="sets"
-                value={post.sets}
+                value={getLastFiveLines(post.sets)}
                 onChange={(e) => handleChange(e, post._id)}
                 onKeyPress={handleKeyPress}  // Add the keyPress handler
               />
@@ -107,11 +109,12 @@ const PostCard = ({ post, handleChange, handleSave, handleDelete, toggleEditMode
             <Card.Title>{post.exercise}</Card.Title>
             <Card.Text>{post.equipment}</Card.Text>
             <Card.Text>Last Edited: {new Date(post.lastDateEdited).toLocaleString()}</Card.Text>
+            <Card.Subtitle>5 Most Recent Workouts</Card.Subtitle>
             <Card.Text style={{ whiteSpace: 'pre-line' }}>
-              {renderSetsWithDateStyled(post.sets)}
+              {getLastFiveLines(post.sets)}
             </Card.Text>
             <Link to={`/posts/${post._id}`}>
-              <Button variant='primary' className='mr-2'> Read More</Button>
+              <Button variant='primary' className='mr-2'>Full History</Button>
             </Link>
             <Button variant='danger' onClick={() => handleDelete(post._id)}>Delete</Button>
             <Button variant='secondary' onClick={() => toggleEditMode(post._id)}>Edit</Button>
