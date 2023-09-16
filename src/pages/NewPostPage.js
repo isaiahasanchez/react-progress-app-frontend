@@ -25,7 +25,7 @@ const NewPostPage = () => {
     });
 
 
-    const currentDate = new Date().toLocaleString() + " --   "; 
+    const currentDate = new Date().toLocaleString() + " --   \u2611 \u2610"; 
 
     const navigate = useNavigate();
 
