@@ -1,9 +1,12 @@
-import React from 'react'
-import {Route, BrowserRouter as Router, Routes} from 'react-router-dom'
-import HomePage from './pages/HomePage'
-import NewPostPage from './pages/NewPostPage'
-import PostPage from './pages/PostPage'
-import NavBar from './components/NavBar'
+// External library imports
+import React from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+
+// Custom component imports
+import HomePage from './pages/HomePage';
+import NewPostPage from './pages/NewPostPage';
+import PostPage from './pages/PostPage';
+import NavBar from './components/NavBar';
 
 function App() {
   return (

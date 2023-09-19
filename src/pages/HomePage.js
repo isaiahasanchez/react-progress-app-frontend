@@ -69,20 +69,6 @@ const HomePage = () => {
     }
   };
 
-  // const handleSave = async (id) => {
-  //   const postToUpdate = posts.find(post => post._id === id);
-
-  //   try {
-  //     const updatedPost = await apiService.updatePost(id, postToUpdate);
-  //     let updatedPosts = posts.map(post => (
-  //       post._id === id ? { ...updatedPost, editMode: false } : post
-  //     ));
-  //     setPosts(updatedPosts);  // Update the state with sorted posts
-  //   } catch (error) {
-  //     console.error('Error updating post:', error);
-  //   }
-  // };
-  
 
   return (
     <Container>
