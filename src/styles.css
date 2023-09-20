@@ -1,0 +1,33 @@
+body {
+    background-color: #2C2C2C;  /* Greyish-black background */
+    color: white;                /* White text color */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* Apple-like font */
+  }
+  
+  a {
+    color: #007BFF; /* Light blue color for links; you can adjust this */
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  .btn-primary {
+    background-color: #007BFF;  /* Adjust the main color */
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;  /* A bit darker on hover */
+  }
+  
+  .container {
+    max-width: 800px;  /* Narrower container for better readability */
+    margin-top: 2rem;
+  }
+  
+  .alert {
+    margin-top: 1rem;
+  }
+  

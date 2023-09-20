@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Button, Form, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import './PostCard.css'
 
 const StyledDateSets = ({ sets }) => {
   const datePattern = /\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2} (AM|PM)/;

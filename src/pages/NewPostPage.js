@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import './NewPostPage.css'
+import '../styles.css'
 import { Form, Button, Container, Alert } from "react-bootstrap";
 
 const IMAGE_OPTIONS = [

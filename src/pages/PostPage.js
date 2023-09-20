@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import './PostPage.css'
 import { Card, Container } from 'react-bootstrap'
+
 
 
 const PostPage = () => {
