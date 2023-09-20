@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Alert } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Container, Row, Alert, Button } from "react-bootstrap";
 import apiService from "../api/apiService";
 import PostCard from "../components/PostCard";
 
@@ -15,11 +16,20 @@ const HomePage = () => {
     fetchPosts();
   }, []);
 
+  /**
+ * Displays a temporary alert message to the user.
+ * @param {string} type - The type of the alert. e.g., 'success' or 'danger'.
+ * @param {string} message - The message to display in the alert.
+ */
   const showAlert = (type, message) => {
     setAlert({ visible: true, type, message });
     setTimeout(() => setAlert({ visible: false, type: "", message: "" }), 3000); // auto-hide after 3 seconds
   };
 
+  /**
+ * Fetches all posts, sorts them by date, and sets them to the local state.
+ * Handles errors by logging and showing an alert.
+ */
   const fetchPosts = async () => {
     try {
       const postsData = await apiService.fetchPosts();
@@ -37,6 +47,10 @@ const HomePage = () => {
     }
   };
 
+  /**
+ * Deletes a post by its ID.
+ * @param {string} id - The ID of the post to delete.
+ */
   const handleDelete = async (id) => {
     try {
       await apiService.deletePost(id);
@@ -47,6 +61,10 @@ const HomePage = () => {
     }
   };
 
+  /**
+ * Toggles the edit mode for a specific post.
+ * @param {string} id - The ID of the post to toggle edit mode for.
+ */
   const toggleEditMode = (id) => {
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
@@ -55,18 +73,36 @@ const HomePage = () => {
     );
   };
 
+ /**
+ * Handles updates to a specific post's attributes.
+ * 
+ * If updating 'sets', it appends the new value to existing content. 
+ * For other attributes, it replaces the value based on input name.
+ * 
+ * @param {object} e - The event object from the input change.
+ * @param {string} id - The ID of the post being edited.
+ */
   const handleChange = (e, id) => {
     const { name, value } = e.target;
-    setPosts(prevPosts => prevPosts.map(post => {
-        if (post._id === id && name === 'sets') {
-            return { ...post, sets: `${post.sets}\n${value}` };
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => {
+        if (post._id === id && name === "sets") {
+          // Split the existing sets and remove the last 5 lines
+          let lines = post.sets.split("\n");
+          lines.splice(-5); // Remove the last 5 lines
+
+          // Now add the new sets (which contains the latest 5 lines)
+          lines.push(...value.split("\n"));
+
+          return { ...post, sets: lines.join("\n") };
         } else if (post._id === id) {
-            return { ...post, [name]: value };
+          return { ...post, [name]: value };
         } else {
-            return post;
+          return post;
         }
-    }));
-};
+      })
+    );
+  };
 
 
   const handleSave = async (id) => {
@@ -86,6 +122,9 @@ const HomePage = () => {
     <Container>
       {alert.visible && <Alert variant={alert.type}>{alert.message}</Alert>}
       <h1>Your Exercises</h1>
+      <Link to={`/posts/new`}>
+        <Button variant='primary' className='mr-2'>Create A New Exercise</Button>
+      </Link>
       <Row>
         {posts.map((post) => (
           <PostCard
