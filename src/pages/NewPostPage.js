@@ -38,7 +38,25 @@ const NewPostPage = () => {
     });
     const [errors, setErrors] = useState({});
 
-
+    const validateForm = () => {
+        const newErrors = {};
+    
+        if (!post.exercise.trim()) {
+            newErrors.exercise = "Exercise field is required.";
+        }
+    
+        if (!post.equipment.trim()) {
+            newErrors.equipment = "Equipment field is required.";
+        }
+    
+        if(!post.sets.trim()){
+            newErrors.sets = "Sets field is required."
+        }
+    
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0; // returns true if no errors
+    };
+    
 
     const currentDate = new Date().toLocaleString() + " \u2611 \u2610 -- "; 
 
@@ -50,6 +68,11 @@ const NewPostPage = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            return; // stop here if there are validation errors
+        }
+
         console.log(post);
         const success = await createPost(post);
         if (success) navigate('/');
@@ -61,10 +84,13 @@ const NewPostPage = () => {
                 <Form.Group>
                     <Form.Label>Exercise</Form.Label>
                     <Form.Control type='text' name='exercise' placeholder='Exercise' onChange={handleChange} />
+                    {errors.exercise && <p style={{ color: 'red' }}>{errors.exercise}</p>}
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Equipment</Form.Label>
-                    <Form.Control type='text' name='equipment' placeholder='Equipment' onChange={handleChange} />
+                    <Form.Control type='text' name='equipment' placeholder='Equipment' onChange={handleChange}
+                     />
+                     {errors.equipment && <p style={{ color: 'red' }}>{errors.equipment}</p>}
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Select an Image</Form.Label>
@@ -77,6 +103,7 @@ const NewPostPage = () => {
                 <Form.Group>
                     <Form.Label>Sets</Form.Label>
                     <Form.Control as='textarea' rows={12} name='sets' placeholder='Sets' defaultValue={currentDate} onChange={handleChange} required />
+                    {errors.sets && <p style={{ color: 'red' }}>{errors.sets}</p>}
                 </Form.Group>
                 <Button variant='primary' type='submit'>
                     Create 
