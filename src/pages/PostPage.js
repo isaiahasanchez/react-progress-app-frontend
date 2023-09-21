@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
-import './PostPage.css'
 import { Card, Container } from 'react-bootstrap'
+
 
 
 
@@ -25,7 +25,7 @@ const PostPage = () => {
     },[id])
   return (
     <Container className='mt-4'>
-        <Card>
+        <Card style={{backgroundColor:"rgb(225 226 230)"}}>
         <div style={{ 
             height: '300px', 
             width: '400px', 

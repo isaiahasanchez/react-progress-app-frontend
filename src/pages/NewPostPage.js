@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import './NewPostPage.css'
-import '../styles.css'
 import { Form, Button, Container, Alert } from "react-bootstrap";
+import './NewPostPage.css';
+import '../styles.css';
 
 const IMAGE_OPTIONS = [
   { label: "Rows", value: "/images/row.jpeg" },
@@ -149,7 +149,7 @@ const NewPostPage = () => {
           />
           {errors.sets && <p style={{ color: "red" }}>{errors.sets}</p>}
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="dark" type="submit">
           Create
         </Button>
       </Form>

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Container, Row, Alert, Button } from "react-bootstrap";
+import { Container, Row, Alert, Button, Col } from "react-bootstrap";
 import apiService from "../api/apiService";
 import PostCard from "../components/PostCard";
-import './HomePage.css'
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
@@ -53,10 +52,11 @@ const HomePage = () => {
    * @param {string} id - The ID of the post to delete.
    */
   const handleDelete = async (id) => {
-    const postToDelete = posts.find((post)=> post._id == id)
+    const postToDelete = posts.find((post) => post._id == id);
     console.log(postToDelete);
     const userConfirmed = window.confirm(
-      `Are you sure you want to delete the entire ${postToDelete.exercise} workout history? `    );
+      `Are you sure you want to delete the entire ${postToDelete.exercise} workout history? `
+    );
     if (!userConfirmed) {
       return;
     }
@@ -128,12 +128,18 @@ const HomePage = () => {
   return (
     <Container>
       {alert.visible && <Alert variant={alert.type}>{alert.message}</Alert>}
-      <h1>Your Exercises</h1>
-      <Link to={`/posts/new`}>
-        <Button variant="primary" className="mr-2">
-          Create A New Exercise
-        </Button>
-      </Link>
+      <Row className="justify-content-between align-items-center">
+        <Col xs="auto">
+          <h1>Your Exercises</h1>
+        </Col>
+        <Col xs="auto">
+          <Link to={`/posts/new`}>
+            <Button variant="dark" className="mr-2">
+              Create A New Exercise
+            </Button>
+          </Link>
+        </Col>
+      </Row>
       <Row>
         {posts.map((post) => (
           <PostCard

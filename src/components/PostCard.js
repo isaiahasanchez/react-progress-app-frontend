@@ -1,7 +1,9 @@
 import React from "react";
 import { Card, Button, Form, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import './PostCard.css'
+import '../styles.css'
+
+
 
 const StyledDateSets = ({ sets }) => {
   const datePattern = /\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2} (AM|PM)/;
@@ -74,7 +76,7 @@ const PostCard = ({
 
   return (
     <Col xs={12} className="mb-4">
-      <Card style={{ minWidth: "18rem" }}>
+      <Card style={{ backgroundColor:"rgb(225 226 230)", minWidth: "18rem" }}>
         {post.editMode ? (
           <Form>
             <Form.Group>
@@ -97,7 +99,7 @@ const PostCard = ({
                 onKeyPress={handleKeyPress}
               />
             </Form.Group>
-            <Button variant="primary" onClick={() => handleSave(post._id)}>
+            <Button variant="secondary" onClick={() => handleSave(post._id)}>
               Save Changes
             </Button>
           </Form>
@@ -113,7 +115,7 @@ const PostCard = ({
               <StyledDateSets sets={getLastFiveLines(post.sets)} />
             </Card.Text>
             <Link to={`/posts/${post._id}`}>
-              <Button variant="primary" className="mr-2">
+              <Button variant="dark" className="mr-2">
                 Full History
               </Button>
             </Link>
