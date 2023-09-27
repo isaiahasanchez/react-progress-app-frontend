@@ -51,9 +51,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    setCurrentUser(null);
+  const logout = async () => {
+    try {
+      await axios.post(
+        'http://localhost:5500/logout', // Your server logout endpoint
+        {},
+        { withCredentials: true }
+      );
+      setCurrentUser(null);
+    } catch (error) {
+      console.error('Failed to log out', error);
+    }
   };
+
 
   const value = {
     currentUser,
