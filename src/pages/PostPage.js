@@ -18,7 +18,7 @@ const PostPage = () => {
 
     useEffect(() => {
         const fetchPost = async () => {
-            const res = await axios.get(`http://localhost:5500/posts/${id}`)
+            const res = await axios.get(`http://localhost:5500/posts/${id}`, {withCredentials: true})
             setPost(res.data)
         }
         fetchPost()

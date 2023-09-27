@@ -30,11 +30,11 @@ const NewPostPage = () => {
   });
   const [errors, setErrors] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState(null);
-  const [feedbackType, setFeedbackType] = useState(null); // 'success' or 'error'
+  const [feedbackType, setFeedbackType] = useState(null); // 'success' or 'error' maybe get rid of the success variant which could delete the feedback type state if its not neccessary  
 
   const createPost = async (post) => {
     try {
-      await axios.post(POSTS_ENDPOINT, post);
+      await axios.post(POSTS_ENDPOINT, post, { withCredentials:true});
       setFeedbackMessage("Post created successfully!");
       setFeedbackType("success");
       return true;
@@ -51,10 +51,6 @@ const NewPostPage = () => {
 
     if (!post.exercise.trim()) {
       newErrors.exercise = "Exercise field is required.";
-    }
-
-    if (!post.equipment.trim()) {
-      newErrors.equipment = "Equipment field is required.";
     }
 
     if (!post.sets.trim()) {
@@ -84,7 +80,7 @@ const NewPostPage = () => {
     e.preventDefault();
 
     if (!validateForm()) {
-      return; // stop here if there are validation errors
+      return; // stop here if there are validation errors because if validateFrom is false then that means there were errors. True means no errors.
     }
 
     console.log(post);
