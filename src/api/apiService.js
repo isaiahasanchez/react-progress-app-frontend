@@ -35,8 +35,10 @@ export const deletePost = async (id) => {
   }
 };
 
-export default {
+const apiService = {
   fetchPosts,
   updatePost,
   deletePost,
 };
+
+export default apiService;

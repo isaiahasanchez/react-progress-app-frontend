@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Alert, Button, Col } from "react-bootstrap";
 import apiService from "../api/apiService";
@@ -12,25 +12,7 @@ const HomePage = () => {
     message: "",
   });
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  /**
-   * Displays a temporary alert message to the user.
-   * @param {string} type - The type of the alert. e.g., 'success' or 'danger'.
-   * @param {string} message - The message to display in the alert.
-   */
-  const showAlert = (type, message) => {
-    setAlert({ visible: true, type, message });
-    setTimeout(() => setAlert({ visible: false, type: "", message: "" }), 3000); // auto-hide after 3 seconds
-  };
-
-  /**
-   * Fetches all posts, sorts them by date, and sets them to the local state.
-   * Handles errors by logging and showing an alert.
-   */
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const postsData = await apiService.fetchPosts();
       const sortByDate = postsData.sort(
@@ -45,17 +27,22 @@ const HomePage = () => {
       console.error("Error fetching posts:", error);
       showAlert("danger", "Failed to fetch posts.");
     }
+  }, []);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+  const showAlert = (type, message) => {
+    setAlert({ visible: true, type, message });
+    setTimeout(() => setAlert({ visible: false, type: "", message: "" }), 3000);
   };
 
-  /**
-   * Deletes a post by its ID.
-   * @param {string} id - The ID of the post to delete.
-   */
   const handleDelete = async (id) => {
-    const postToDelete = posts.find((post) => post._id == id);
+    const postToDelete = posts.find((post) => post._id === id);
     console.log(postToDelete);
     const userConfirmed = window.confirm(
-      `Are you sure you want to delete the entire ${postToDelete.exercise} workout history? `
+      `Are you sure you want to delete the entire ${postToDelete.exercise} workout history?`
     );
     if (!userConfirmed) {
       return;
@@ -69,10 +56,6 @@ const HomePage = () => {
     }
   };
 
-  /**
-   * Toggles the edit mode for a specific post.
-   * @param {string} id - The ID of the post to toggle edit mode for.
-   */
   const toggleEditMode = (id) => {
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
@@ -81,27 +64,14 @@ const HomePage = () => {
     );
   };
 
-  /**
-   * Handles updates to a specific post's attributes.
-   *
-   * If updating 'sets', it appends the new value to existing content.
-   * For other attributes, it replaces the value based on input name.
-   *
-   * @param {object} e - The event object from the input change.
-   * @param {string} id - The ID of the post being edited.
-   */
   const handleChange = (e, id) => {
     const { name, value } = e.target;
     setPosts((prevPosts) =>
       prevPosts.map((post) => {
         if (post._id === id && name === "sets") {
-          // Split the existing sets and remove the last 5 lines
           let lines = post.sets.split("\n");
-          lines.splice(-5); // Remove the last 5 lines
-
-          // Now add the new sets (which contains the latest 5 lines)
+          lines.splice(-5);
           lines.push(...value.split("\n"));
-
           return { ...post, sets: lines.join("\n") };
         } else if (post._id === id) {
           return { ...post, [name]: value };
@@ -114,10 +84,9 @@ const HomePage = () => {
 
   const handleSave = async (id) => {
     const postToUpdate = posts.find((post) => post._id === id);
-
     try {
       await apiService.updatePost(id, postToUpdate);
-      fetchPosts(); // Fetch all posts again after an edit to refresh the UI Not the most efficient way to do this since it adds another fetch but it works for now since the other option requires a refresh manually
+      fetchPosts();
       showAlert("success", "Post updated successfully.");
     } catch (error) {
       console.error("Error updating post:", error);
