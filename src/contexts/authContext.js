@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 import axios from 'axios'; // Import axios
+import { API_BASE_URL } from '../api/apiService';
 
 export const AuthContext = createContext();
 
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (email, password) => {
     try {
       const response = await axios.post(
-        'http://localhost:5500/register', 
+        `${API_BASE_URL}/register`, 
         { email, password }, 
         { withCredentials: true } // Make sure to set withCredentials to true
       );
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post(
-        'http://localhost:5500/login', 
+        `${API_BASE_URL}/login`, 
         { email, password }, 
         { withCredentials: true } // Make sure to set withCredentials to true
       );
@@ -54,7 +55,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await axios.post(
-        'http://localhost:5500/logout', // Your server logout endpoint
+        `${API_BASE_URL}/logout`, // Your server logout endpoint
         {},
         { withCredentials: true }
       );

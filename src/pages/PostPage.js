@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import { Card, Container } from 'react-bootstrap'
+import { API_BASE_URL } from '../api/apiService'
 
 
 
@@ -18,7 +19,7 @@ const PostPage = () => {
 
     useEffect(() => {
         const fetchPost = async () => {
-            const res = await axios.get(`http://localhost:5500/posts/${id}`, {withCredentials: true})
+            const res = await axios.get(`${API_BASE_URL}/posts/${id}`, {withCredentials: true})
             setPost(res.data)
         }
         fetchPost()

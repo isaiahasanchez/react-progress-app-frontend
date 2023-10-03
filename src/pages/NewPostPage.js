@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import './NewPostPage.css';
 import '../styles.css';
+import { API_BASE_URL } from "../api/apiService";
 
 const IMAGE_OPTIONS = [
   { label: "Rows", value: "/images/row.jpeg" },
@@ -17,8 +18,6 @@ const IMAGE_OPTIONS = [
   // ... add more if needed
 ];
 
-const POSTS_ENDPOINT =
-  process.env.REACT_APP_POSTS_ENDPOINT || "http://localhost:5500/posts";
 
 const NewPostPage = () => {
   const [post, setPost] = useState({
@@ -34,7 +33,7 @@ const NewPostPage = () => {
 
   const createPost = async (post) => {
     try {
-      await axios.post(POSTS_ENDPOINT, post, { withCredentials:true});
+      await axios.post(`${API_BASE_URL}/posts`, post, { withCredentials:true});
       setFeedbackMessage("Post created successfully!");
       setFeedbackType("success");
       return true;
