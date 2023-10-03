@@ -13,7 +13,7 @@ This app is currently in development and for now you can log in using the test u
 
 ## Live site 
 Here is the link to the live site: 
-[Link Text](https://progressexerciselog.netlify.app)
+[progressexerciselog.app](https://progressexerciselog.netlify.app)
 
 ## Features
 
