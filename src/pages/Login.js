@@ -1,50 +1,49 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/authContext'; // adjust the path
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext'; 
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // assume you have a login method in your context
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        console.log('Attempting to login'); // Add this line
+        console.log('Attempting to login');
         await login(email, password);
-        console.log('Login successful, navigating to homepage'); // Add this line
-        navigate('/'); // navigate to the homepage or dashboard upon successful login
+        console.log('Login successful, navigating to homepage');
+        navigate('/');
     } catch (err) {
-        console.error(err); // log actual error to the console
+        console.error(err);
         setError('Failed to log in');
     }
-}
-
+  }
 
   return (
-    // Your Form Here
-    <form onSubmit={handleSubmit}>
-      {/* Display Error */}
-      {error && <p>{error}</p>}
-      {/* Email Input */}
-      <input 
-        type="email" 
-        value={email} 
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      {/* Password Input */}
-      <input 
-        type="password" 
-        value={password} 
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      {/* Submit Button */}
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        {error && <p>{error}</p>}
+        <input 
+          type="email" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
+        <input 
+          type="password" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+        />
+        <button type="submit">Login</button>
+      </form>
+      <div className="mt-3">
+        <Link to="/register" className="btn btn-secondary">Sign Up</Link>
+      </div>
+    </div>
   );
 }
 
