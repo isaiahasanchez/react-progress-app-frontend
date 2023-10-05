@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Container, Form, Button, Alert, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/authContext'; // adjust the path
+import { useAuth } from '../contexts/authContext';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -22,27 +23,42 @@ function Register() {
   }
 
   return (
-    // Your Form Here
-    <form onSubmit={handleSubmit}>
-      {/* Display Error */}
-      {error && <p>{error}</p>}
-      {/* Email Input */}
-      <input 
-        type="email" 
-        value={email} 
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      {/* Password Input */}
-      <input 
-        type="password" 
-        value={password} 
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      {/* Submit Button */}
-      <button type="submit">Register</button>
-    </form>
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <Card>
+            <Card.Header as="h2">Register</Card.Header>
+            <Card.Body>
+              <div className="text-center mb-4">
+                Please enter an email and password.
+              </div>
+              <Form onSubmit={handleSubmit}>
+                {error && <Alert variant="danger">{error}</Alert>}
+                <Form.Group>
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control 
+                    type="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter Email"
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control 
+                    type="password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter Password"
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit">Register</Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
