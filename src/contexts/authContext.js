@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios
 import { API_BASE_URL } from '../api/apiService';
 
@@ -10,6 +10,24 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    // Fetch current user when the app starts up
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get(
+          `${API_BASE_URL}/current-user`,
+          { withCredentials: true }
+        );
+        setCurrentUser(response.data);
+      } catch (error) {
+        console.error('Failed to fetch current user', error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
 
   // Register Method using axios
   const register = async (email, password) => {
