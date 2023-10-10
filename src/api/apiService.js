@@ -7,7 +7,7 @@ export const API_BASE_URL = 'https://progress-exercise-and-rehab-log-app.onrende
 
 //API_BASE_URL_ONLINE 'https://progress-exercise-and-rehab-log-app.onrender.com'
 
-// API_BASE_URL_LOCAL = 'http://localhost:3000'
+// API_BASE_URL_LOCAL = 'http://localhost:5500'
 
 // Function to fetch all posts
 export const fetchPosts = async () => {

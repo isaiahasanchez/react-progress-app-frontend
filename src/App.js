@@ -10,9 +10,9 @@ import Register from './pages/Register';
 import LoadingSpinner from './components/LoadingSpinner';
 
 function App() {
-  const { currentUser, loading } = useAuth(); // Adjust based on your actual context values
+  const { currentUser, loading } = useAuth(); 
   if (loading) {
-    return <LoadingSpinner />; // or any loading spinner component you prefer
+    return <LoadingSpinner />;  
   }
   
   return (
