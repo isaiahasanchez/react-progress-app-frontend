@@ -10,6 +10,8 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     // Fetch current user when the app starts up
@@ -22,6 +24,8 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(response.data);
       } catch (error) {
         console.error('Failed to fetch current user', error);
+      } finally{
+        setLoading(false)
       }
     };
 
@@ -89,6 +93,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     register,
+    loading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

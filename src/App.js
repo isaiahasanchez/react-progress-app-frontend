@@ -7,9 +7,13 @@ import PostPage from './pages/PostPage';
 import NavBar from './components/NavBar';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import LoadingSpinner from './components/LoadingSpinner';
 
 function App() {
-  const { currentUser } = useAuth(); // Adjust based on your actual context values
+  const { currentUser, loading } = useAuth(); // Adjust based on your actual context values
+  if (loading) {
+    return <LoadingSpinner />; // or any loading spinner component you prefer
+  }
   
   return (
     <Router>
