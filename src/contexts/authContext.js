@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
           `${API_BASE_URL}/current-user`,
           { withCredentials: true }
         );
+        console.log('current user data:', response.data);
         setCurrentUser(response.data);
       } catch (error) {
         console.error('Failed to fetch current user', error);
@@ -41,6 +42,8 @@ export const AuthProvider = ({ children }) => {
         { email, password }, 
         { withCredentials: true } // Make sure to set withCredentials to true
       );
+      console.log('Register response data:', response.data);
+
       
       if (response.status !== 201) {
         throw new Error(response.data.error || 'Failed to register');
@@ -62,6 +65,7 @@ export const AuthProvider = ({ children }) => {
         { email, password }, 
         { withCredentials: true } // Make sure to set withCredentials to true
       );
+      console.log('Login response data:', response.data);
       
       if (response.status !== 200) {
         throw new Error(response.data.error || 'Failed to login');
@@ -81,6 +85,7 @@ export const AuthProvider = ({ children }) => {
         {},
         { withCredentials: true }
       );
+      console.log('Logout was called');
       setCurrentUser(null);
     } catch (error) {
       console.error('Failed to log out', error);
