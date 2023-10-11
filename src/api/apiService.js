@@ -3,7 +3,7 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 
-export const API_BASE_URL = 'https://progress-exercise-and-rehab-log-app.onrender.com';
+export const API_BASE_URL = 'https://localhost:5500';
 
 // Function to fetch all posts
 export const fetchPosts = async () => {
