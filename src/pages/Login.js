@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Alert, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext';
+import CardHeader from 'react-bootstrap/esm/CardHeader';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -28,7 +29,7 @@ function Login() {
       <Row className="justify-content-center">
         <Col md={6}>
           <Card>
-            <Card.Header as="h2">Login</Card.Header>
+            <Card.Header as="h2">Welcome to Progress Exercise Log! Please Login</Card.Header>
             <Card.Body>
               <Form onSubmit={handleSubmit}>
                 {error && <Alert variant="danger">{error}</Alert>}
@@ -52,7 +53,7 @@ function Login() {
                 </Form.Group>
                 <Button variant="primary" type="submit">Login</Button>
               </Form>
-              <div className="mt-3 text-center">
+              <div className="mt-3 text-center h5">
                 No account? <Link to="/register">Sign Up</Link>
               </div>
             </Card.Body>
