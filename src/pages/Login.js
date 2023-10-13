@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Alert, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext';
-import CardHeader from 'react-bootstrap/esm/CardHeader';
 
 function Login() {
   const [email, setEmail] = useState('');
