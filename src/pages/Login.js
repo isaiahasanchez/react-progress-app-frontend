@@ -33,7 +33,7 @@ function Login() {
         navigate('/');
     } catch (err) {
         console.error(err);
-        setError('Failed to log in');
+        setError(err.message || 'Failed to log in');
     }
   }
 

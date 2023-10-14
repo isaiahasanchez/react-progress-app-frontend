@@ -74,7 +74,11 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(response.data.user);
 
     } catch (error) {
-      throw error;
+      if (error.response && error.response.data.message) {
+        throw new Error(error.response.data.message);
+      } else {
+        throw new Error('Failed to login');
+      }
     }
   };
 
