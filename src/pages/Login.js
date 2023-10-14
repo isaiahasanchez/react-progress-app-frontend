@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Added useEffect
 import { Container, Form, Button, Alert, Row, Col, Card } from 'react-bootstrap';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom'; // Added useLocation
 import { useAuth } from '../contexts/authContext';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false); // New state for showing the success message
   const navigate = useNavigate();
+  const location = useLocation(); // Added this for accessing query parameters
   const { login } = useAuth();
+
+  useEffect(() => {
+      const params = new URLSearchParams(location.search);
+      if (params.get('registered')) {
+          setShowSuccess(true);
+          // Optionally, hide the message after 5 seconds:
+          const timer = setTimeout(() => {
+              setShowSuccess(false);
+          }, 10000);
+          return () => clearTimeout(timer); // Cleanup timer on unmount
+      }
+  }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +44,7 @@ function Login() {
           <Card>
             <Card.Header as="h2">Welcome to Progress Exercise Log! Please Login</Card.Header>
             <Card.Body>
+              {showSuccess && <Alert variant="success">You have successfully registered with an account. Please login.</Alert>} {/* Display the success message */}
               <Form onSubmit={handleSubmit}>
                 {error && <Alert variant="danger">{error}</Alert>}
                 <Form.Group>

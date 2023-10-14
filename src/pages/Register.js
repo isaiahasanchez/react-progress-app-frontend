@@ -14,7 +14,7 @@ function Register() {
     e.preventDefault();
     try {
       await register(email, password);
-      navigate('/login'); // navigate to login page or other page upon successful registration
+      navigate('/login?registered=true'); // navigate to login page or other page upon successful registration
     } catch (err) {
         console.error(err); // log the actual error to the console
         setError(err.message || 'Failed to create an account'); // display the actual error message
