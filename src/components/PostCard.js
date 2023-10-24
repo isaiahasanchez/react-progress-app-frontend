@@ -129,7 +129,7 @@ const PostCard = ({
               variant="secondary"
               onClick={() => toggleEditMode(post._id)}
             >
-              Edit
+              Edit to Add a New Workout
             </Button>
           </Card.Body>
         )}

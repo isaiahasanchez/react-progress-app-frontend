@@ -102,7 +102,7 @@ const HomePage = () => {
           <h1>Your Exercises</h1>
         </Col>
         <Col xs="12" md="12"><Alert variant="info">
-          Welcome, click the button below to add a new exercise. Click edit and press shift after a line to copy the previous workout automatically
+          Welcome, click the button below to add a new exercise. Click edit and press shift after a line to copy the previous workout automatically which you can then edit if needed
           </Alert></Col>
         <Col xs="auto">
           <Link to={`/posts/new`}>
