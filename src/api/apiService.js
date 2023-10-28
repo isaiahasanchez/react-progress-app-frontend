@@ -2,9 +2,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
-
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 // Function to fetch all posts
 export const fetchPosts = async () => {
@@ -21,7 +19,9 @@ export const fetchPosts = async () => {
 // Function to update a post
 export const updatePost = async (id, postData) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/posts/${id}`, postData, { withCredentials: true });
+    const response = await axios.put(`${API_BASE_URL}/posts/${id}`, postData, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     console.error('Error updating post:', error);

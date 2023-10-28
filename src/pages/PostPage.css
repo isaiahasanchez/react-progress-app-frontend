@@ -1,15 +1,17 @@
 form {
-    margin-top: 2rem;
-  }
-  
-  input, textarea, .form-control {
-    background: #444;  /* Slightly different than the main background for distinction */
-    color: white;
-    border: none;
-    border-radius: 5px; /* Smooth edges */
-  }
-  
-  input::placeholder, textarea::placeholder {
-    color: #888; /* Placeholder color */
-  }
-  
+  margin-top: 2rem;
+}
+
+input,
+textarea,
+.form-control {
+  background: #444; /* Slightly different than the main background for distinction */
+  color: white;
+  border: none;
+  border-radius: 5px; /* Smooth edges */
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #888; /* Placeholder color */
+}

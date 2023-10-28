@@ -13,62 +13,69 @@ function Login() {
   const { login } = useAuth();
 
   useEffect(() => {
-      const params = new URLSearchParams(location.search);
-      if (params.get('registered')) {
-          setShowSuccess(true);
-          // Optionally, hide the message after 10 seconds:
-          const timer = setTimeout(() => {
-              setShowSuccess(false);
-          }, 10000);
-          return () => clearTimeout(timer); // Cleanup timer on unmount
-      }
+    const params = new URLSearchParams(location.search);
+    if (params.get('registered')) {
+      setShowSuccess(true);
+      // Optionally, hide the message after 10 seconds:
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+      }, 10000);
+      return () => clearTimeout(timer); // Cleanup timer on unmount
+    }
   }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        console.log('Attempting to login', {email, password});
-        await login(email, password);
-        console.log('Login successful, navigating to homepage');
-        navigate('/');
+      console.log('Attempting to login', { email, password });
+      await login(email, password);
+      console.log('Login successful, navigating to homepage');
+      navigate('/');
     } catch (err) {
-        console.error(err);
-        setError(err.message || 'Failed to log in');
+      console.error(err);
+      setError(err.message || 'Failed to log in');
     }
-  }
+  };
 
   return (
-    <Container className="mt-5">
-      <Row className="justify-content-center">
+    <Container className='mt-5'>
+      <Row className='justify-content-center'>
         <Col md={6}>
           <Card>
-            <Card.Header as="h2">Welcome to Progress Exercise Log! Please Login</Card.Header>
+            <Card.Header as='h2'>Welcome to Progress Exercise Log! Please Login</Card.Header>
             <Card.Body>
-              {showSuccess && <Alert variant="success">You have successfully registered with an account. Please login.</Alert>} {/* Display the success message */}
+              {showSuccess && (
+                <Alert variant='success'>
+                  You have successfully registered with an account. Please login.
+                </Alert>
+              )}{' '}
+              {/* Display the success message */}
               <Form onSubmit={handleSubmit}>
-                {error && <Alert variant="danger">{error}</Alert>}
+                {error && <Alert variant='danger'>{error}</Alert>}
                 <Form.Group>
                   <Form.Label>Email</Form.Label>
-                  <Form.Control 
-                    type="email" 
-                    value={email} 
+                  <Form.Control
+                    type='email'
+                    value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter Email"
+                    placeholder='Enter Email'
                   />
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Password</Form.Label>
-                  <Form.Control 
-                    type="password" 
-                    value={password} 
+                  <Form.Control
+                    type='password'
+                    value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter Password"
+                    placeholder='Enter Password'
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit">Login</Button>
+                <Button variant='primary' type='submit'>
+                  Login
+                </Button>
               </Form>
-              <div className="mt-3 text-center h5">
-                No account? <Link to="/register">Sign Up</Link>
+              <div className='mt-3 text-center h5'>
+                No account? <Link to='/register'>Sign Up</Link>
               </div>
             </Card.Body>
           </Card>

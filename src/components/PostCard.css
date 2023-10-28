@@ -1,11 +1,11 @@
 .card {
-    background: #444; /* Slightly different than main background */
-    border: none;
-    border-radius: 10px; /* Rounded corners */
-    margin-bottom: 1.5rem; /* Space between cards */
-  }
-  
-  .card-title, .card-text {
-    color: white; /* White text inside the card */
-  }
-  
+  background: #444; /* Slightly different than main background */
+  border: none;
+  border-radius: 10px; /* Rounded corners */
+  margin-bottom: 1.5rem; /* Space between cards */
+}
+
+.card-title,
+.card-text {
+  color: white; /* White text inside the card */
+}

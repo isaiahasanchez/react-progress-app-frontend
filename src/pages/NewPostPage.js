@@ -1,46 +1,45 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Form, Button, Container, Alert } from 'react-bootstrap';
 import './NewPostPage.css';
 import '../styles.css';
-import { API_BASE_URL } from "../api/apiService";
+import { API_BASE_URL } from '../api/apiService';
 
 const IMAGE_OPTIONS = [
-  { label: "Rows", value: "/images/row.jpeg" },
-  { label: "Bench Press", value: "/images/bench-press.jpeg" },
-  { label: "Push Up", value: "/images/push-up.jpeg" },
-  { label: "Curls", value: "/images/curls.jpeg" },
-  { label: "Deadlift", value: "/images/deadlift.jpeg" },
-  { label: "Lunges", value: "/images/lunges.jpeg" },
-  { label: "Squats", value: "/images/squats.jpeg" },
-  { label: "Pull Up", value: "/images/pull-up.jpeg" },
+  { label: 'Rows', value: '/images/row.jpeg' },
+  { label: 'Bench Press', value: '/images/bench-press.jpeg' },
+  { label: 'Push Up', value: '/images/push-up.jpeg' },
+  { label: 'Curls', value: '/images/curls.jpeg' },
+  { label: 'Deadlift', value: '/images/deadlift.jpeg' },
+  { label: 'Lunges', value: '/images/lunges.jpeg' },
+  { label: 'Squats', value: '/images/squats.jpeg' },
+  { label: 'Pull Up', value: '/images/pull-up.jpeg' },
   // ... add more if needed
 ];
 
-
 const NewPostPage = () => {
   const [post, setPost] = useState({
-    exercise: "",
-    equipment: "",
+    exercise: '',
+    equipment: '',
     image: IMAGE_OPTIONS[0].value,
-    sets: "",
+    sets: '',
     editMode: false,
   });
   const [errors, setErrors] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState(null);
-  const [feedbackType, setFeedbackType] = useState(null); // 'success' or 'error' maybe get rid of the success variant which could delete the feedback type state if its not neccessary  
+  const [feedbackType, setFeedbackType] = useState(null); // 'success' or 'error' maybe get rid of the success variant which could delete the feedback type state if its not neccessary
 
   const createPost = async (post) => {
     try {
-      await axios.post(`${API_BASE_URL}/posts`, post, { withCredentials:true});
-      setFeedbackMessage("Post created successfully!");
-      setFeedbackType("success");
+      await axios.post(`${API_BASE_URL}/posts`, post, { withCredentials: true });
+      setFeedbackMessage('Post created successfully!');
+      setFeedbackType('success');
       return true;
     } catch (error) {
-      console.error("Failed to create post:", error);
-      setFeedbackMessage("Error creating post. Please try again later.");
-      setFeedbackType("danger");
+      console.error('Failed to create post:', error);
+      setFeedbackMessage('Error creating post. Please try again later.');
+      setFeedbackType('danger');
       return false;
     }
   };
@@ -49,18 +48,18 @@ const NewPostPage = () => {
     const newErrors = {};
 
     if (!post.exercise.trim()) {
-      newErrors.exercise = "Exercise field is required.";
+      newErrors.exercise = 'Exercise field is required.';
     }
 
     if (!post.sets.trim()) {
-      newErrors.sets = "Sets field is required.";
+      newErrors.sets = 'Sets field is required.';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // returns true if no errors
   };
 
-  const currentDate = new Date().toLocaleString() + " \u2611 \u2610 -- ";
+  const currentDate = new Date().toLocaleString() + ' \u2611 \u2610 -- ';
 
   const navigate = useNavigate();
 
@@ -84,46 +83,40 @@ const NewPostPage = () => {
 
     console.log(post);
     const success = await createPost(post);
-    if (success) navigate("/");
+    if (success) navigate('/');
   };
 
   return (
-    <Container className="mt-4">
+    <Container className='mt-4'>
       <Form onSubmit={handleSubmit}>
         {feedbackMessage && (
-          <Alert
-            variant={feedbackType}
-            onClose={() => setFeedbackMessage(null)}
-            dismissible
-          >
+          <Alert variant={feedbackType} onClose={() => setFeedbackMessage(null)} dismissible>
             {feedbackMessage}
           </Alert>
         )}
         <Form.Group>
           <Form.Label>Exercise</Form.Label>
           <Form.Control
-            type="text"
-            name="exercise"
-            placeholder="Exercise"
+            type='text'
+            name='exercise'
+            placeholder='Exercise'
             onChange={handleChange}
           />
-          {errors.exercise && <p style={{ color: "red" }}>{errors.exercise}</p>}
+          {errors.exercise && <p style={{ color: 'red' }}>{errors.exercise}</p>}
         </Form.Group>
         <Form.Group>
           <Form.Label>Equipment</Form.Label>
           <Form.Control
-            type="text"
-            name="equipment"
-            placeholder="Equipment"
+            type='text'
+            name='equipment'
+            placeholder='Equipment'
             onChange={handleChange}
           />
-          {errors.equipment && (
-            <p style={{ color: "red" }}>{errors.equipment}</p>
-          )}
+          {errors.equipment && <p style={{ color: 'red' }}>{errors.equipment}</p>}
         </Form.Group>
         <Form.Group>
           <Form.Label>Select an Image</Form.Label>
-          <Form.Select name="image" onChange={handleChange}>
+          <Form.Select name='image' onChange={handleChange}>
             {IMAGE_OPTIONS.map((imgOption, index) => (
               <option key={imgOption.value} value={imgOption.value}>
                 {imgOption.label}
@@ -134,17 +127,17 @@ const NewPostPage = () => {
         <Form.Group>
           <Form.Label>Sets</Form.Label>
           <Form.Control
-            as="textarea"
+            as='textarea'
             rows={12}
-            name="sets"
-            placeholder="Sets"
+            name='sets'
+            placeholder='Sets'
             defaultValue={currentDate}
             onChange={handleChange}
             required
           />
-          {errors.sets && <p style={{ color: "red" }}>{errors.sets}</p>}
+          {errors.sets && <p style={{ color: 'red' }}>{errors.sets}</p>}
         </Form.Group>
-        <Button variant="dark" type="submit">
+        <Button variant='dark' type='submit'>
           Create
         </Button>
       </Form>

@@ -21,6 +21,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "prettier --check .",
     "format": "prettier --write .",
     "prepare": "husky install"
   },
@@ -51,7 +52,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "npm run format"
     }
   },
   "lint-staged": {
