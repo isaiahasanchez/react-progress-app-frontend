@@ -16,7 +16,7 @@ function Login() {
       const params = new URLSearchParams(location.search);
       if (params.get('registered')) {
           setShowSuccess(true);
-          // Optionally, hide the message after 5 seconds:
+          // Optionally, hide the message after 10 seconds:
           const timer = setTimeout(() => {
               setShowSuccess(false);
           }, 10000);
