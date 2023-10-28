@@ -1,11 +1,18 @@
-# Progress Exercise & Rehab Log App (Frontend)
+# Progress Exercise Log (Frontend)
 
-This is the frontend repository for the "Progress Exercise & Rehab Log" application. It's built using [React](https://reactjs.org/) and integrates with a backend service to fetch and manage posts related to exercises and rehabilitation. 
+## System Setup and Deployment Overview
+This is the frontend repository for the "Progress Exercise & Rehab Log" application. It's built using [React](https://reactjs.org/) and integrates with a backend service to fetch and manage posts related to exercises and rehabilitation. The backend repository can be found here [https://github.com/isaiahasanchez/react-progress-app-backend](https://github.com/isaiahasanchez/react-progress-app-backend)
+
+This application is deployed using Netlify for the front-end hosting, ensuring a smooth and responsive user experience with our React-based interface. To address cross-origin request issues, we've implemented redirects, enabling seamless communication between different origins and enhancing the security and efficiency of the application. For information on redirects see the netlify redirects documents here [https://docs.netlify.com/routing/redirects/](https://docs.netlify.com/routing/redirects/) 
+
+The backend is powered by Cyclic, providing a robust and scalable Node.js environment that integrates with the front end. This setup not only facilitates continuous deployment and easy updates but also establishes a reliable and cohesive full-stack MERN application ecosystem.
+
+## App Concept and Background
 
 This app serves as a simple and quick way to manage personalized exercises and too easily view your progress. This idea for this app came about from working as a professional Athletic Trainer in sports medicine for over 5 years and needing a simple app that athlete could use to track their rehabilitation and exercise goals.
 
 This app is currently in development and for now you can log in using the test user t2@test.com with login password of: testpasswod.
-<img width="1112" alt="Screenshot 2023-10-02 at 11 22 07 PM" src="https://github.com/isaiahasanchez/react-progress-app-frontend/assets/124002003/dcd10699-263c-4b7f-83bb-d094886eeb3d">
+<img width="1127" alt="Screenshot 2023-10-28 at 12 04 51 PM" src="https://github.com/isaiahasanchez/react-progress-app-frontend/assets/124002003/f6a0c66f-9bd3-4cf8-a980-b9011f6f15a8">
 <img width="1112" alt="Screenshot 2023-10-02 at 11 25 32 PM" src="https://github.com/isaiahasanchez/react-progress-app-frontend/assets/124002003/1c60cd27-0e99-4038-a3fc-0cfe914b6425">
 <img width="1112" alt="Screenshot 2023-10-02 at 11 25 16 PM" src="https://github.com/isaiahasanchez/react-progress-app-frontend/assets/124002003/72218d41-e3d5-401d-b370-4f618e0da4a5">
 <img width="1112" alt="Screenshot 2023-10-02 at 11 24 59 PM" src="https://github.com/isaiahasanchez/react-progress-app-frontend/assets/124002003/12e5293e-8f01-430d-935f-4428b42cdcaa">
@@ -13,7 +20,7 @@ This app is currently in development and for now you can log in using the test u
 
 ## Live site 
 Here is the link to the live site: 
-[progressexerciselog.app](https://progressexerciselog.netlify.app)
+[https://progressexerciselog.app](https://progressexerciselog.netlify.app)
 
 ## Features
 
@@ -28,18 +35,16 @@ Here is the link to the live site:
 - **React Router**: For frontend routing and navigation.
   
 ## Folder Structure
-
+- `public/`: Contains images and redirect file as well as index.html
 - `src/`: Contains the main source code for the frontend.
+  - `api/`: Functions for interacting with backend server
   - `components/`: Reusable React components.
-  - `contexts/`: React context providers for global state.
-  - `services/`: Utilities and services, including API integrations.
-  - `styles/`: Global styles and theme configurations.
+  - `contexts/`: React context providers including authentication context
+  - `pages/`: Main webpage layout and structure
+  - `App.js/`: The core JavaScript file that routes and renders different components based on the URL path.
+  - `Index.js/`: The entry point of the React application. It initializes the app, wrapping it with providers like AuthProvider.
+  - `styles.css/`: Global styles and theme configurations.
 
-## API Endpoints
-
-- **Fetch Posts**: GET `/posts`
-- **Update Post**: PUT `/posts/:id`
-- **Delete Post**: DELETE `/posts/:id`
 
 ## Contributing
 
