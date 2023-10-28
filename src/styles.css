@@ -7,7 +7,7 @@ body {
 a {
     color: #007BFF; /* Light blue color for links; you can adjust this */
     text-decoration: none;
-}
+             }
   
   a:hover {
     text-decoration: underline;
