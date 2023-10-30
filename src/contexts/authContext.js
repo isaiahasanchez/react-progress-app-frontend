@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
 import { API_BASE_URL } from '../api/apiService';
 
 export const AuthContext = createContext();
@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
     const fetchCurrentUser = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/current-user`, { withCredentials: true });
-        console.log('current user data:', response.data);
         setCurrentUser(response.data);
       } catch (error) {
         console.error('Failed to fetch current user', error);
@@ -35,9 +34,8 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post(
         `${API_BASE_URL}/register`,
         { email, password },
-        { withCredentials: true }, // Make sure to set withCredentials to true
+        { withCredentials: true },
       );
-      console.log('Register response data:', response.data);
 
       if (response.status !== 201) {
         throw new Error(response.data.error || 'Failed to register');
@@ -56,9 +54,8 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post(
         `${API_BASE_URL}/login`,
         { email, password },
-        { withCredentials: true }, // Make sure to set withCredentials to true
+        { withCredentials: true },
       );
-      console.log('Login response data:', response.data);
 
       if (response.status !== 200) {
         throw new Error(response.data.error || 'Failed to login');
@@ -76,12 +73,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post(
-        `${API_BASE_URL}/logout`, // Your server logout endpoint
-        {},
-        { withCredentials: true },
-      );
-      console.log('Logout was called');
+      await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
       setCurrentUser(null);
     } catch (error) {
       console.error('Failed to log out', error);

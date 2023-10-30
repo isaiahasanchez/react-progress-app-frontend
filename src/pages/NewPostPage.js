@@ -81,7 +81,6 @@ const NewPostPage = () => {
       return; // stop here if there are validation errors because if validateFrom is false then that means there were errors. True means no errors.
     }
 
-    console.log(post);
     const success = await createPost(post);
     if (success) navigate('/');
   };

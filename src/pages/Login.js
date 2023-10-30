@@ -27,9 +27,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log('Attempting to login', { email, password });
       await login(email, password);
-      console.log('Login successful, navigating to homepage');
       navigate('/');
     } catch (err) {
       console.error(err);

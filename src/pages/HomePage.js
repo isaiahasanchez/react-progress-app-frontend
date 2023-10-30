@@ -40,7 +40,6 @@ const HomePage = () => {
 
   const handleDelete = async (id) => {
     const postToDelete = posts.find((post) => post._id === id);
-    console.log(postToDelete);
     const userConfirmed = window.confirm(
       `Are you sure you want to delete the entire ${postToDelete.exercise} workout history?`,
     );

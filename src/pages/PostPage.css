@@ -13,5 +13,5 @@ textarea,
 
 input::placeholder,
 textarea::placeholder {
-  color: #888; /* Placeholder color */
+  color: #888;
 }

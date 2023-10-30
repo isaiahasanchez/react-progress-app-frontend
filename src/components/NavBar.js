@@ -2,17 +2,17 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { AuthContext } from '../contexts/authContext'; // Correct Context
+import { AuthContext } from '../contexts/authContext';
 import logoImage from '../components/progress-logo.png';
 
 const NavBar = () => {
-  const { currentUser, logout } = useContext(AuthContext); // Correct usage of useContext with AuthContext
+  const { currentUser, logout } = useContext(AuthContext);
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
-    navigate('/'); // Navigate to home page after logout
+    navigate('/');
   };
 
   return (

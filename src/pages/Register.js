@@ -8,16 +8,16 @@ function Register() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { register } = useAuth(); // assume you have a register method in your context
+  const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await register(email, password);
-      navigate('/login?registered=true'); // navigate to login page or other page upon successful registration
+      navigate('/login?registered=true'); // navigate to login page
     } catch (err) {
-      console.error(err); // log the actual error to the console
-      setError(err.message || 'Failed to create an account'); // display the actual error message
+      console.error(err);
+      setError(err.message || 'Failed to create an account');
     }
   };
 
