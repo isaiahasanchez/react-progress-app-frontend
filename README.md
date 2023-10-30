@@ -9,7 +9,15 @@ The backend is powered by Cyclic, providing a robust and scalable Node.js enviro
 
 ## App Concept and Background
 
-This app serves as a simple and quick way to manage personalized exercises and too easily view your progress. This idea for this app came about from working as a professional Athletic Trainer in sports medicine for over 5 years and needing a simple app that athlete could use to track their rehabilitation and exercise goals.
+This app serves as a simple and quick way to manage personalized exercises and to easily view your progress. This idea for this app came about from working as a professional Athletic Trainer in sports medicine for over 5 years and needing a simple app that athlete could use to track their rehabilitation and exercise goals.
+
+## How to use the app
+- Register, or if you already have an account, log in.
+- On the homepage, if you don't have any exercise categories or wish to create a new one, click "Create a New Exercise" to navigate to the page where you can create a new exercise.
+- View a list of the exercise categories you currently have on the homepage. Examples of categories might include squats, bench press, pull-ups, etc.
+- When you see all your exercise categories, on a day you are working out, simply click "Edit" for the category you want to add your new daily progress. Add it to the list by clicking at the end of the last workout and pressing "Return" or "Shift" to copy that exercise data to a new line, then edit it to correspond to that day's exercise data.
+- The homepage is designed to show only the most recent five days of exercise data. If you want more, click "Full History" to navigate to that exercise's full history.
+
 
 This app is currently in development and for now you can log in using the test user t2@test.com with login password of: testpasswod.
 <img width="1127" alt="Screenshot 2023-10-28 at 12 04 51 PM" src="https://github.com/isaiahasanchez/react-progress-app-frontend/assets/124002003/f6a0c66f-9bd3-4cf8-a980-b9011f6f15a8">
