@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { useAuth } from './contexts/authContext';
 import HomePage from './pages/HomePage';
 import NewPostPage from './pages/NewPostPage';
@@ -8,9 +8,10 @@ import NavBar from './components/NavBar';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import LoadingSpinner from './components/LoadingSpinner';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const { currentUser, loading } = useAuth();
+  const { loading } = useAuth();
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -19,14 +20,29 @@ function App() {
     <Router>
       <NavBar />
       <Routes>
-        <Route path='/' element={currentUser ? <HomePage /> : <Navigate to='/login' replace />} />
+        <Route
+          path='/'
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path='/posts/new'
-          element={currentUser ? <NewPostPage /> : <Navigate to='/login' replace />}
+          element={
+            <ProtectedRoute>
+              <NewPostPage />
+            </ProtectedRoute>
+          }
         />
         <Route
           path='/posts/:id'
-          element={currentUser ? <PostPage /> : <Navigate to='/login' replace />}
+          element={
+            <ProtectedRoute>
+              <PostPage />
+            </ProtectedRoute>
+          }
         />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
