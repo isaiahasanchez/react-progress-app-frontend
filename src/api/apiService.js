@@ -15,6 +15,12 @@ export const fetchPosts = async () => {
   }
 };
 
+// Function to fetch one post
+export const fetchPost = async (id) => {
+  const response = await axios.get(`${API_BASE_URL}/posts/${id}`, { withCredentials: true });
+  return response.data;
+};
+
 // Function to update a post
 export const updatePost = async (id, postData) => {
   try {
@@ -39,6 +45,7 @@ export const deletePost = async (id) => {
   }
 };
 
+// The apiService constant is an object that aggregates all API functions for a single default import, providing a convenient way to access multiple API operations through one imported module. May not need if I continue to use React Query
 const apiService = {
   fetchPosts,
   updatePost,
