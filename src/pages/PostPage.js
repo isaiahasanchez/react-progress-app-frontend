@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Card, Container } from 'react-bootstrap';
 import { fetchPost } from '../api/apiService';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const PostPage = () => {
   // useParams() retrieves URL parameters from the current route, such as 'id', to fetch and display data for that specific route.
@@ -18,7 +19,7 @@ const PostPage = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (error) {
