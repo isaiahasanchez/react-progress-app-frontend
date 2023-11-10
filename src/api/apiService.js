@@ -17,7 +17,7 @@ export const fetchPosts = async () => {
 
 // Function to fetch one post
 export const fetchPost = async (id) => {
-  const response = await axios.get(`${API_BASE_URL}/postss/${id}`, { withCredentials: true });
+  const response = await axios.get(`${API_BASE_URL}/posts/${id}`, { withCredentials: true });
   return response.data;
 };
 
