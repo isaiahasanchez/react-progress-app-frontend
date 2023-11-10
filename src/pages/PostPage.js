@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, Container } from 'react-bootstrap';
 import { fetchPost } from '../api/apiService';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorMessage from '../components/ErrorMessage';
 
 const PostPage = () => {
   // useParams() retrieves URL parameters from the current route, such as 'id', to fetch and display data for that specific route.
@@ -23,7 +24,11 @@ const PostPage = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return (
+      <Container className='mt-4'>
+        <ErrorMessage status={error.response?.status} />
+      </Container>
+    );
   }
 
   return (
