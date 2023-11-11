@@ -5,6 +5,7 @@ import { Form, Button, Container, Alert } from 'react-bootstrap';
 import './NewPostPage.css';
 import '../styles.css';
 import { API_BASE_URL } from '../api/apiService';
+// Import react query
 
 const IMAGE_OPTIONS = [
   { label: 'Rows', value: '/images/row.jpeg' },
@@ -35,7 +36,7 @@ const NewPostPage = () => {
       await axios.post(`${API_BASE_URL}/posts`, post, { withCredentials: true });
       setFeedbackMessage('Post created successfully!');
       setFeedbackType('success');
-      return true;
+      return true; // Returns true so that the functions below can check whether it was successful or not
     } catch (error) {
       console.error('Failed to create post:', error);
       setFeedbackMessage('Error creating post. Please try again later.');
