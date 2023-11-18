@@ -4,6 +4,12 @@ axios.defaults.withCredentials = true;
 
 export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
+// Function to create a post
+export const createPost = async (post) => {
+  const response = await axios.post(`${API_BASE_URL}/posts`, post, { withCredentials: true });
+  return response.data;
+};
+
 // Function to fetch all posts
 export const fetchPosts = async () => {
   try {
@@ -50,6 +56,7 @@ const apiService = {
   fetchPosts,
   updatePost,
   deletePost,
+  createPost,
 };
 
 export default apiService;

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import './NewPostPage.css';
 import '../styles.css';
-import { API_BASE_URL } from '../api/apiService';
-// Import react query
+import { createPost } from '../api/apiService';
 
 const IMAGE_OPTIONS = [
   { label: 'Rows', value: '/images/row.jpeg' },
@@ -29,21 +28,19 @@ const NewPostPage = () => {
   });
   const [errors, setErrors] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState(null);
-  const [feedbackType, setFeedbackType] = useState(null); // 'success' or 'error' maybe get rid of the success variant which could delete the feedback type state if its not neccessary
 
-  const createPost = async (post) => {
-    try {
-      await axios.post(`${API_BASE_URL}/posts`, post, { withCredentials: true });
-      setFeedbackMessage('Post created successfully!');
-      setFeedbackType('success');
-      return true; // Returns true so that the functions below can check whether it was successful or not
-    } catch (error) {
+  const navigate = useNavigate();
+
+  const { mutate } = useMutation({
+    mutationFn: createPost,
+    onSuccess: () => {
+      navigate('/');
+    },
+    onError: (error) => {
       console.error('Failed to create post:', error);
       setFeedbackMessage('Error creating post. Please try again later.');
-      setFeedbackType('danger');
-      return false;
-    }
-  };
+    },
+  });
 
   const validateForm = () => {
     const newErrors = {};
@@ -62,8 +59,6 @@ const NewPostPage = () => {
 
   const currentDate = new Date().toLocaleString() + ' \u2611 \u2610 -- ';
 
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
     setPost({ ...post, [e.target.name]: e.target.value });
     // Clearing respective error when value changes
@@ -75,22 +70,20 @@ const NewPostPage = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
       return; // stop here if there are validation errors because if validateFrom is false then that means there were errors. True means no errors.
     }
-
-    const success = await createPost(post);
-    if (success) navigate('/');
+    mutate(post);
   };
 
   return (
     <Container className='mt-4'>
       <Form onSubmit={handleSubmit}>
         {feedbackMessage && (
-          <Alert variant={feedbackType} onClose={() => setFeedbackMessage(null)} dismissible>
+          <Alert variant='danger' onClose={() => setFeedbackMessage(null)} dismissible>
             {feedbackMessage}
           </Alert>
         )}
