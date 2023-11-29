@@ -1,37 +1,63 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Alert, Button, Col } from 'react-bootstrap';
-import apiService from '../api/apiService';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import apiService, { deletePost, updatePost } from '../api/apiService';
 import PostCard from '../components/PostCard';
 
 const HomePage = () => {
-  const [posts, setPosts] = useState([]);
   const [alert, setAlert] = useState({
     visible: false,
     type: '',
     message: '',
   });
 
-  const fetchPosts = useCallback(async () => {
-    try {
-      const postsData = await apiService.fetchPosts();
-      const sortByDate = postsData.sort(
-        (a, b) => new Date(b.lastDateEdited) - new Date(a.lastDateEdited),
-      );
-      const postsWithEditMode = sortByDate.map((post) => ({
-        ...post,
-        editMode: false,
-      }));
-      setPosts(postsWithEditMode);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-      showAlert('danger', 'Failed to fetch posts.');
-    }
-  }, []);
+  // used for invalidating the posts query to refresh the list after a successful deletion.
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
+  const {
+    data: posts,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['posts'],
+    queryFn: async () => {
+      const postsData = await apiService.fetchPosts();
+      return postsData
+        .sort((a, b) => new Date(b.lastDateEdited) - new Date(a.lastDateEdited))
+        .map((post) => ({ ...post, editMode: false }));
+    },
+  });
+
+  const { mutate: deleteMutation } = useMutation({
+    mutationFn: deletePost,
+    onSuccess: () => {
+      // invalidates queries so that it can be refetched with updates deleted posts
+      queryClient.invalidateQueries(['posts']);
+    },
+    onError: (error) => {
+      console.error('Error deleting post:', error);
+      showAlert('danger', 'Failed to delete post.');
+    },
+  });
+
+  const { mutate: updateMutation } = useMutation({
+    mutationFn: updatePost,
+    onSuccess: () => {
+      // After a successful update, invalidate and refetch posts
+      queryClient.invalidateQueries(['posts']);
+      showAlert('success', 'Post updated successfully.');
+    },
+    onError: (error) => {
+      console.error('Error updating post:', error);
+      showAlert('danger', 'Failed to update post.');
+    },
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (isError) return <div>Error: {error.message}</div>;
 
   const showAlert = (type, message) => {
     setAlert({ visible: true, type, message });
@@ -43,52 +69,15 @@ const HomePage = () => {
     const userConfirmed = window.confirm(
       `Are you sure you want to delete the entire ${postToDelete.exercise} workout history?`,
     );
-    if (!userConfirmed) {
-      return;
-    }
-    try {
-      await apiService.deletePost(id);
-      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== id));
-    } catch (error) {
-      console.error('Error deleting post:', error);
-      showAlert('danger', 'Failed to delete post.');
+
+    if (userConfirmed) {
+      deleteMutation(id);
     }
   };
 
-  const toggleEditMode = (id) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((post) => (post._id === id ? { ...post, editMode: !post.editMode } : post)),
-    );
-  };
-
-  const handleChange = (e, id) => {
-    const { name, value } = e.target;
-    setPosts((prevPosts) =>
-      prevPosts.map((post) => {
-        if (post._id === id && name === 'sets') {
-          let lines = post.sets.split('\n');
-          lines.splice(-5);
-          lines.push(...value.split('\n'));
-          return { ...post, sets: lines.join('\n') };
-        } else if (post._id === id) {
-          return { ...post, [name]: value };
-        } else {
-          return post;
-        }
-      }),
-    );
-  };
-
-  const handleSave = async (id) => {
-    const postToUpdate = posts.find((post) => post._id === id);
-    try {
-      await apiService.updatePost(id, postToUpdate);
-      fetchPosts();
-      showAlert('success', 'Post updated successfully.');
-    } catch (error) {
-      console.error('Error updating post:', error);
-      showAlert('danger', 'Failed to update post.');
-    }
+  const handleSave = async (id, updatedPost) => {
+    updateMutation({ id, updatedPost });
+    console.log(id, updatedPost);
   };
 
   return (
@@ -113,12 +102,10 @@ const HomePage = () => {
         </Col>
       </Row>
       <Row>
-        {posts.map((post) => (
+        {posts?.map((post) => (
           <PostCard
             key={post._id}
             post={post}
-            toggleEditMode={toggleEditMode}
-            handleChange={handleChange}
             handleSave={handleSave}
             handleDelete={handleDelete}
           />

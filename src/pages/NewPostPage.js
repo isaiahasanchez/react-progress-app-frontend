@@ -24,7 +24,6 @@ const NewPostPage = () => {
     equipment: '',
     image: IMAGE_OPTIONS[0].value,
     sets: '',
-    editMode: false,
   });
   const [errors, setErrors] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState(null);

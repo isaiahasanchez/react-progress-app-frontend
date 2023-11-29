@@ -28,16 +28,11 @@ export const fetchPost = async (id) => {
 };
 
 // Function to update a post
-export const updatePost = async (id, postData) => {
-  try {
-    const response = await axios.put(`${API_BASE_URL}/posts/${id}`, postData, {
-      withCredentials: true,
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error updating post:', error);
-    throw error;
-  }
+export const updatePost = async ({ id, updatedPost }) => {
+  const response = await axios.put(`${API_BASE_URL}/posts/${id}`, updatedPost, {
+    withCredentials: true,
+  });
+  return response.data;
 };
 
 // Function to delete a post
