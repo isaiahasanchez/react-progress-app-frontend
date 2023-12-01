@@ -4,6 +4,7 @@ import { Container, Row, Alert, Button, Col } from 'react-bootstrap';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiService, { deletePost, updatePost } from '../api/apiService';
 import PostCard from '../components/PostCard';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const HomePage = () => {
   const [alert, setAlert] = useState({
@@ -35,6 +36,7 @@ const HomePage = () => {
     onSuccess: () => {
       // invalidates queries so that it can be refetched with updates deleted posts
       queryClient.invalidateQueries(['posts']);
+      showAlert('success', 'Post deleted successfully.');
     },
     onError: (error) => {
       console.error('Error deleting post:', error);
@@ -51,11 +53,11 @@ const HomePage = () => {
     },
     onError: (error) => {
       console.error('Error updating post:', error);
-      showAlert('danger', 'Failed to update post.');
+      showAlert('danger', 'Failed to update post. Please try again');
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;
 
   if (isError) return <div>Error: {error.message}</div>;
 

@@ -19,9 +19,7 @@ const PostPage = () => {
     queryFn: () => fetchPost(id),
   });
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+  if (isLoading) return <LoadingSpinner />;
 
   if (error) {
     return (
