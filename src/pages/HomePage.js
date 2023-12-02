@@ -20,7 +20,6 @@ const HomePage = () => {
     data: posts,
     isLoading,
     isError,
-    error,
   } = useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
@@ -28,6 +27,9 @@ const HomePage = () => {
       return postsData
         .sort((a, b) => new Date(b.lastDateEdited) - new Date(a.lastDateEdited))
         .map((post) => ({ ...post, editMode: false }));
+    },
+    onError: (error) => {
+      showAlert('danger', error.message || 'Failed to fetch data. Please try again later.');
     },
   });
 
@@ -57,14 +59,16 @@ const HomePage = () => {
     },
   });
 
-  if (isLoading) return <LoadingSpinner />;
-
-  if (isError) return <div>Error: {error.message}</div>;
-
   const showAlert = (type, message) => {
     setAlert({ visible: true, type, message });
     setTimeout(() => setAlert({ visible: false, type: '', message: '' }), 3000);
   };
+
+  // return a spinner when the posts are loading
+  if (isLoading) return <LoadingSpinner />;
+
+  if (isError)
+    return <Alert variant='danger'>Failed to load exercies please try again later</Alert>;
 
   const handleDelete = async (id) => {
     const postToDelete = posts.find((post) => post._id === id);
