@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../api/apiService';
+import { useMutation } from '@tanstack/react-query';
+import { registerUser } from '../api/apiService';
 
 export const AuthContext = createContext();
 
@@ -11,6 +13,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  // const queryClient = useQueryClient()
 
   useEffect(() => {
     // Fetch current user when the app starts up
@@ -29,24 +32,32 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Register Method using axios
-  const register = async (email, password) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/register`,
-        { email, password },
-        { withCredentials: true },
-      );
+  // const register = async (email, password) => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${API_BASE_URL}/register`,
+  //       { email, password },
+  //       { withCredentials: true },
+  //     );
 
-      if (response.status !== 201) {
-        throw new Error(response.data.error || 'Failed to register');
-      }
+  //     if (response.status !== 201) {
+  //       throw new Error(response.data.error || 'Failed to register');
+  //     }
 
-      // Automatically login user after registration
-      setCurrentUser(response.data.user);
-    } catch (error) {
-      throw error;
-    }
-  };
+  //     // Automatically login user after registration
+  //     setCurrentUser(response.data.user);
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
+
+  const { mutate: register } = useMutation({
+    mutationKey: ['registerUser'],
+    mutationFn: registerUser,
+    onSuccess: (data) => {
+      setCurrentUser(data.user);
+    },
+  });
 
   // Login Method using axios
   const login = async (email, password) => {

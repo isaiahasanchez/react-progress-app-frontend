@@ -67,6 +67,7 @@ const HomePage = () => {
   // return a spinner when the posts are loading
   if (isLoading) return <LoadingSpinner />;
 
+  // Using isError instead of onError due to easier integration
   if (isError)
     return <Alert variant='danger'>Failed to load exercies please try again later</Alert>;
 

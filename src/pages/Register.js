@@ -13,7 +13,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(email, password);
+      await register({ email, password });
       navigate('/login?registered=true'); // navigate to login page
     } catch (err) {
       console.error(err);
