@@ -50,15 +50,6 @@ export const AuthProvider = ({ children }) => {
     },
   });
 
-  // const logout = async () => {
-  //   try {
-  //     await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
-  //     setCurrentUser(null);
-  //   } catch (error) {
-  //     console.error('Failed to log out', error);
-  //   }
-  // };
-
   const { mutate: logout } = useMutation({
     mutationKey: ['logout'],
     mutationFn: logoutUser,
