@@ -26,13 +26,18 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await login(email, password);
-      navigate('/');
-    } catch (err) {
-      console.error(err);
-      setError(err.message || 'Failed to log in');
-    }
+    login(
+      { email, password },
+      {
+        onSuccess: () => {
+          navigate('/');
+        },
+        onError: (error) => {
+          console.error(error);
+          setError('Login failed. Please try again.');
+        },
+      },
+    );
   };
 
   return (

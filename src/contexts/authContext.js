@@ -1,9 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_BASE_URL } from '../api/apiService';
+import { API_BASE_URL, registerUser, logoutUser, loginUser } from '../api/apiService';
 import { useMutation } from '@tanstack/react-query';
-import { registerUser } from '../api/apiService';
-
 export const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -31,26 +29,7 @@ export const AuthProvider = ({ children }) => {
     fetchCurrentUser();
   }, []);
 
-  // Register Method using axios
-  // const register = async (email, password) => {
-  //   try {
-  //     const response = await axios.post(
-  //       `${API_BASE_URL}/register`,
-  //       { email, password },
-  //       { withCredentials: true },
-  //     );
-
-  //     if (response.status !== 201) {
-  //       throw new Error(response.data.error || 'Failed to register');
-  //     }
-
-  //     // Automatically login user after registration
-  //     setCurrentUser(response.data.user);
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // };
-
+  // Register Method using React Query
   const { mutate: register } = useMutation({
     mutationKey: ['registerUser'],
     mutationFn: registerUser,
@@ -59,37 +38,34 @@ export const AuthProvider = ({ children }) => {
     },
   });
 
-  // Login Method using axios
-  const login = async (email, password) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/login`,
-        { email, password },
-        { withCredentials: true },
-      );
+  // Login method using React Query
+  const { mutate: login } = useMutation({
+    mutationKey: ['Login'],
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      setCurrentUser(data.user);
+    },
+    onError: (error) => {
+      console.error('Login error', error);
+    },
+  });
 
-      if (response.status !== 200) {
-        throw new Error(response.data.error || 'Failed to login');
-      }
+  // const logout = async () => {
+  //   try {
+  //     await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
+  //     setCurrentUser(null);
+  //   } catch (error) {
+  //     console.error('Failed to log out', error);
+  //   }
+  // };
 
-      setCurrentUser(response.data.user);
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        throw new Error(error.response.data.message);
-      } else {
-        throw new Error('Failed to login');
-      }
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
+  const { mutate: logout } = useMutation({
+    mutationKey: ['logout'],
+    mutationFn: logoutUser,
+    onSuccess: () => {
       setCurrentUser(null);
-    } catch (error) {
-      console.error('Failed to log out', error);
-    }
-  };
+    },
+  });
 
   const value = {
     currentUser,
