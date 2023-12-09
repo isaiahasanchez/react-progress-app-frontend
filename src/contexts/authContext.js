@@ -13,12 +13,14 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   // const queryClient = useQueryClient()
 
+  // Using useEffect to monitor the page when it mounts and refreshes to keep user signed in.
   useEffect(() => {
-    // Fetch current user when the app starts up
+    // Fetch current user when the app starts up or refreshes so if there is a user it isnt logged out on refresh
     const fetchCurrentUser = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/current-user`, { withCredentials: true });
         setCurrentUser(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('Failed to fetch current user', error);
       } finally {
