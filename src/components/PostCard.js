@@ -55,7 +55,7 @@ const PostCard = ({ post, handleSave, handleDelete }) => {
       const newValue =
         currentValue.slice(0, currentPosition) +
         '\n' +
-        new Date().toLocaleString() +
+        new Date().toLocaleDateString() +
         ' -- ' +
         lastSetsContent +
         currentValue.slice(currentPosition);

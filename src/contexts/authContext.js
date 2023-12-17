@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 
 const AuthContext = createContext();
 
+// used to enable any component in the app to access the authentication state and methods without having to pass props down manually through every level of the component tree.
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {

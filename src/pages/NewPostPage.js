@@ -56,7 +56,7 @@ const NewPostPage = () => {
     return Object.keys(newErrors).length === 0; // returns true if no errors
   };
 
-  const currentDate = new Date().toLocaleString() + ' \u2611 \u2610 -- ';
+  const currentDate = new Date().toLocaleDateString() + ' \u2611 \u2610 -- ';
 
   const handleChange = (e) => {
     setPost({ ...post, [e.target.name]: e.target.value });
