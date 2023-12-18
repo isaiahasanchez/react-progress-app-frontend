@@ -28,7 +28,7 @@ function Register() {
           <Card>
             <Card.Header as='h2'>Register</Card.Header>
             <Card.Body>
-              <div className='text-center mb-4'>Please enter an email and password.</div>
+              <div className='text-center mb-4'>Please create an email and password.</div>
               <Form onSubmit={handleSubmit}>
                 {error && <Alert variant='danger'>{error}</Alert>}
                 <Form.Group>
