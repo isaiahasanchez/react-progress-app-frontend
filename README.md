@@ -1,7 +1,7 @@
 # Progress Exercise Log (Frontend)
 
 ## System Setup and Deployment Overview
-This is the frontend repository for the "Progress Exercise & Rehab Log" application. It's built using [React](https://reactjs.org/) and integrates with a backend service to fetch and manage posts related to exercises and rehabilitation. The backend repository can be found here [https://github.com/isaiahasanchez/react-progress-app-backend](https://github.com/isaiahasanchez/react-progress-app-backend)
+This is the frontend repository for the "Progress Exercise & Rehab Log" application. It's built using [React](https://reactjs.org/) and integrates with a backend service to fetch and manage exercises related to exercises and rehabilitation. The backend repository can be found here [https://github.com/isaiahasanchez/react-progress-app-backend](https://github.com/isaiahasanchez/react-progress-app-backend)
 
 This application is deployed using Netlify for the front-end hosting, ensuring a smooth and responsive user experience with our React-based interface. To address cross-origin request issues, we've implemented redirects, enabling seamless communication between different origins and enhancing the security and efficiency of the application. For information on redirects see the netlify redirects documents here [https://docs.netlify.com/routing/redirects/](https://docs.netlify.com/routing/redirects/) 
 
@@ -33,7 +33,7 @@ Here is the link to the live site:
 ## Features
 
 - **User Authentication**: Users can register, log in, and log out.
-- **Post Management**: Users can view all posts, update their own posts, and delete them.
+- **Post Management**: Users can view all exercises, update their own exercises, and delete them.
 - **Responsive Design**: Built with a mobile-first approach, ensuring usability on all devices.
 
 ## Tech Stack
