@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import './NewPostPage.css';
+import './NewExercisePage.css';
 import '../styles.css';
-import { createPost } from '../api/apiService';
+import { createExercise } from '../api/apiService';
 
 const IMAGE_OPTIONS = [
   { label: 'Rows', value: '/images/row.jpeg' },
@@ -18,8 +18,8 @@ const IMAGE_OPTIONS = [
   // ... add more if needed
 ];
 
-const NewPostPage = () => {
-  const [post, setPost] = useState({
+const NewExercisePage = () => {
+  const [exercise, setExercise] = useState({
     exercise: '',
     equipment: '',
     image: IMAGE_OPTIONS[0].value,
@@ -31,24 +31,24 @@ const NewPostPage = () => {
   const navigate = useNavigate();
 
   const { mutate } = useMutation({
-    mutationFn: createPost,
+    mutationFn: createExercise,
     onSuccess: () => {
       navigate('/');
     },
     onError: (error) => {
-      console.error('Failed to create post:', error);
-      setFeedbackMessage('Error creating post. Please try again later.');
+      console.error('Failed to create exercise:', error);
+      setFeedbackMessage('Error creating exercise. Please try again later.');
     },
   });
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (!post.exercise.trim()) {
+    if (!exercise.exercise.trim()) {
       newErrors.exercise = 'Exercise field is required.';
     }
 
-    if (!post.sets.trim()) {
+    if (!exercise.sets.trim()) {
       newErrors.sets = 'Sets field is required.';
     }
 
@@ -59,7 +59,7 @@ const NewPostPage = () => {
   const currentDate = new Date().toLocaleDateString() + ' \u2611 \u2610 -- ';
 
   const handleChange = (e) => {
-    setPost({ ...post, [e.target.name]: e.target.value });
+    setExercise({ ...exercise, [e.target.name]: e.target.value });
     // Clearing respective error when value changes
     if (errors[e.target.name]) {
       setErrors((prevErrors) => ({
@@ -75,7 +75,7 @@ const NewPostPage = () => {
     if (!validateForm()) {
       return; // stop here if there are validation errors because if validateFrom is false then that means there were errors. True means no errors.
     }
-    mutate(post);
+    mutate(exercise);
   };
 
   return (
@@ -137,4 +137,4 @@ const NewPostPage = () => {
   );
 };
 
-export default NewPostPage;
+export default NewExercisePage;

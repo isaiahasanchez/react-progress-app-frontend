@@ -25,20 +25,20 @@ const getLastFiveLines = (text) => {
   return lines.slice(Math.max(lines.length - 5, 0)).join('\n');
 };
 
-const PostCard = ({ post, handleSave, handleDelete }) => {
+const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
   const [editMode, setEditMode] = useState(false);
-  const [editablePost, setEditablePost] = useState(post);
+  const [editableExercise, setEditableExercise] = useState(exercise);
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
     if (!editMode) {
-      setEditablePost(post); // Reset editable post to the current post data when entering edit mode
+      setEditableExercise(exercise); // Reset editable exercise to the current exercise data when entering edit mode
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditablePost({ ...editablePost, [name]: value });
+    setEditableExercise({ ...editableExercise, [name]: value });
   };
 
   const handleKeyPress = (e) => {
@@ -60,16 +60,17 @@ const PostCard = ({ post, handleSave, handleDelete }) => {
         lastSetsContent +
         currentValue.slice(currentPosition);
 
-      setEditablePost({ ...editablePost, sets: newValue });
+      setEditableExercise({ ...editableExercise, sets: newValue });
     }
   };
 
   const handleSaveChanges = () => {
-    handleSave(post._id, editablePost);
+    handleSave(exercise._id, editableExercise);
     setEditMode(false);
   };
 
-  const renderSets = () => (editMode ? editablePost.sets : getLastFiveLines(editablePost.sets));
+  const renderSets = () =>
+    editMode ? editableExercise.sets : getLastFiveLines(editableExercise.sets);
 
   return (
     <Col xs={12} className='mb-4'>
@@ -81,7 +82,7 @@ const PostCard = ({ post, handleSave, handleDelete }) => {
               <Form.Control
                 type='text'
                 name='exercise'
-                value={editablePost.exercise}
+                value={editableExercise.exercise}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -91,7 +92,7 @@ const PostCard = ({ post, handleSave, handleDelete }) => {
                 as='textarea'
                 rows={5}
                 name='sets'
-                value={editablePost.sets}
+                value={editableExercise.sets}
                 onChange={handleChange}
                 onKeyPress={handleKeyPress}
               />
@@ -102,21 +103,21 @@ const PostCard = ({ post, handleSave, handleDelete }) => {
           </Form>
         ) : (
           <Card.Body>
-            <Card.Title>{editablePost.exercise}</Card.Title>
-            <Card.Text>{editablePost.equipment}</Card.Text>
+            <Card.Title>{editableExercise.exercise}</Card.Title>
+            <Card.Text>{editableExercise.equipment}</Card.Text>
             <Card.Text>
-              Last Edited: {new Date(editablePost.lastDateEdited).toLocaleString()}
+              Last Edited: {new Date(editableExercise.lastDateEdited).toLocaleString()}
             </Card.Text>
             <Card.Subtitle>5 Most Recent Workouts</Card.Subtitle>
             <Card.Text style={{ whiteSpace: 'pre-line' }}>
               <StyledDateSets sets={renderSets()} />
             </Card.Text>
-            <Link to={`/posts/${post._id}`}>
+            <Link to={`/exercises/${exercise._id}`}>
               <Button variant='dark' className='mr-2'>
                 Full History
               </Button>
             </Link>
-            <Button variant='danger' onClick={() => handleDelete(post._id)}>
+            <Button variant='danger' onClick={() => handleDelete(exercise._id)}>
               Delete
             </Button>
             <Button variant='secondary' onClick={toggleEditMode}>
@@ -129,4 +130,4 @@ const PostCard = ({ post, handleSave, handleDelete }) => {
   );
 };
 
-export default PostCard;
+export default ExerciseCard;

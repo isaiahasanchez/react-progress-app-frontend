@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Alert, Button, Col } from 'react-bootstrap';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import apiService, { deletePost, updatePost } from '../api/apiService';
-import PostCard from '../components/PostCard';
+import apiService, { deleteExercise, updateExercise } from '../api/apiService';
+import ExerciseCard from '../components/ExerciseCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const HomePage = () => {
@@ -13,20 +13,20 @@ const HomePage = () => {
     message: '',
   });
 
-  // used for invalidating the posts query to refresh the list after a successful deletion.
+  // used for invalidating the exercises query to refresh the list after a successful deletion.
   const queryClient = useQueryClient();
 
   const {
-    data: posts,
+    data: exercises,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['posts'],
+    queryKey: ['exercises'],
     queryFn: async () => {
-      const postsData = await apiService.fetchPosts();
-      return postsData
+      const exercisesData = await apiService.fetchExercises();
+      return exercisesData
         .sort((a, b) => new Date(b.lastDateEdited) - new Date(a.lastDateEdited))
-        .map((post) => ({ ...post, editMode: false }));
+        .map((exercise) => ({ ...exercise, editMode: false }));
     },
     onError: (error) => {
       showAlert('danger', error.message || 'Failed to fetch data. Please try again later.');
@@ -34,28 +34,28 @@ const HomePage = () => {
   });
 
   const { mutate: deleteMutation } = useMutation({
-    mutationFn: deletePost,
+    mutationFn: deleteExercise,
     onSuccess: () => {
-      // invalidates queries so that it can be refetched with updates deleted posts
-      queryClient.invalidateQueries(['posts']);
-      showAlert('success', 'Post deleted successfully.');
+      // invalidates queries so that it can be refetched with updates deleted exercises
+      queryClient.invalidateQueries(['exercises']);
+      showAlert('success', 'Exercise deleted successfully.');
     },
     onError: (error) => {
-      console.error('Error deleting post:', error);
-      showAlert('danger', 'Failed to delete post.');
+      console.error('Error deleting exercise:', error);
+      showAlert('danger', 'Failed to delete exercise.');
     },
   });
 
   const { mutate: updateMutation } = useMutation({
-    mutationFn: updatePost,
+    mutationFn: updateExercise,
     onSuccess: () => {
-      // After a successful update, invalidate and refetch posts
-      queryClient.invalidateQueries(['posts']);
-      showAlert('success', 'Post updated successfully.');
+      // After a successful update, invalidate and refetch exercises
+      queryClient.invalidateQueries(['exercises']);
+      showAlert('success', 'Exercise updated successfully.');
     },
     onError: (error) => {
-      console.error('Error updating post:', error);
-      showAlert('danger', 'Failed to update post. Please try again');
+      console.error('Error updating exercise:', error);
+      showAlert('danger', 'Failed to update exercise. Please try again');
     },
   });
 
@@ -64,7 +64,7 @@ const HomePage = () => {
     setTimeout(() => setAlert({ visible: false, type: '', message: '' }), 3000);
   };
 
-  // return a spinner when the posts are loading
+  // return a spinner when the exercises are loading
   if (isLoading) return <LoadingSpinner />;
 
   // Using isError instead of onError due to easier integration
@@ -72,9 +72,9 @@ const HomePage = () => {
     return <Alert variant='danger'>Failed to load exercies please try again later</Alert>;
 
   const handleDelete = async (id) => {
-    const postToDelete = posts.find((post) => post._id === id);
+    const exerciseToDelete = exercises.find((exercise) => exercise._id === id);
     const userConfirmed = window.confirm(
-      `Are you sure you want to delete the entire ${postToDelete.exercise} workout history?`,
+      `Are you sure you want to delete the entire ${exerciseToDelete.exercise} workout history?`,
     );
 
     if (userConfirmed) {
@@ -82,9 +82,9 @@ const HomePage = () => {
     }
   };
 
-  const handleSave = async (id, updatedPost) => {
-    updateMutation({ id, updatedPost });
-    console.log(id, updatedPost);
+  const handleSave = async (id, updatedExercise) => {
+    updateMutation({ id, updatedExercise });
+    console.log(id, updatedExercise);
   };
 
   return (
@@ -101,7 +101,7 @@ const HomePage = () => {
           </Alert>
         </Col>
         <Col xs='auto'>
-          <Link to={`/posts/new`}>
+          <Link to={`/exercises/new`}>
             <Button variant='dark' className='mr-2'>
               Create A New Exercise
             </Button>
@@ -109,10 +109,10 @@ const HomePage = () => {
         </Col>
       </Row>
       <Row>
-        {posts?.map((post) => (
-          <PostCard
-            key={post._id}
-            post={post}
+        {exercises?.map((exercise) => (
+          <ExerciseCard
+            key={exercise._id}
+            exercise={exercise}
             handleSave={handleSave}
             handleDelete={handleDelete}
           />

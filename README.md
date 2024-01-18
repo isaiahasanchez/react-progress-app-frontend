@@ -33,7 +33,7 @@ Here is the link to the live site:
 ## Features
 
 - **User Authentication**: Users can register, log in, and log out.
-- **Post Management**: Users can view all exercises, update their own exercises, and delete them.
+- **Exercise Management**: Users can view all exercises, update their own exercises, and delete them.
 - **Responsive Design**: Built with a mobile-first approach, ensuring usability on all devices.
 
 ## Tech Stack

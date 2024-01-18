@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { useAuth } from './contexts/authContext';
 import HomePage from './pages/HomePage';
-import NewPostPage from './pages/NewPostPage';
-import PostPage from './pages/PostPage';
+import NewExercisePage from './pages/NewExercisePage';
+import ExercisePage from './pages/ExercisePage';
 import NavBar from './components/NavBar';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -29,18 +29,18 @@ function App() {
           }
         />
         <Route
-          path='/posts/new'
+          path='/exercises/new'
           element={
             <ProtectedRoute>
-              <NewPostPage />
+              <NewExercisePage />
             </ProtectedRoute>
           }
         />
         <Route
-          path='/posts/:id'
+          path='/exercises/:id'
           element={
             <ProtectedRoute>
-              <PostPage />
+              <ExercisePage />
             </ProtectedRoute>
           }
         />

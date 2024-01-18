@@ -29,7 +29,7 @@ const NavBar = () => {
           <LinkContainer to='/'>
             <Nav.Link>Home</Nav.Link>
           </LinkContainer>
-          <LinkContainer to='/posts/new'>
+          <LinkContainer to='/exercises/new'>
             <Nav.Link>Create New Exercise</Nav.Link>
           </LinkContainer>
           {currentUser && <Nav.Link onClick={handleLogout}>Logout</Nav.Link>}
