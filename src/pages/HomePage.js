@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiService, { deleteExercise, updateExercise } from '../api/apiService';
 import ExerciseCard from '../components/ExerciseCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import './HomePage.css';
 
 const HomePage = () => {
   const [alert, setAlert] = useState({
@@ -84,7 +85,7 @@ const HomePage = () => {
 
   const handleSave = async (id, updatedExercise) => {
     updateMutation({ id, updatedExercise });
-    console.log(id, updatedExercise);
+    // console.log(id, updatedExercise);
   };
 
   return (
@@ -110,12 +111,14 @@ const HomePage = () => {
       </Row>
       <Row>
         {exercises?.map((exercise) => (
+          // <Col xs={6} sm={6} lg={12} xl={12} key={exercise._id}>
           <ExerciseCard
-            key={exercise._id}
+            className='custom-card-width'
             exercise={exercise}
             handleSave={handleSave}
             handleDelete={handleDelete}
           />
+          // </Col>
         ))}
       </Row>
     </Container>

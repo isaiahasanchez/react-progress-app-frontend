@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import { Form, Button, Container, Alert } from 'react-bootstrap';
+import { Form, Button, Container, Alert, Row, Col } from 'react-bootstrap';
 import './NewExercisePage.css';
 import '../styles.css';
 import { createExercise } from '../api/apiService';
@@ -18,12 +18,33 @@ const IMAGE_OPTIONS = [
   // ... add more if needed
 ];
 
+// Helper function to format dates
+// function formatDateToMMDDYYYY(date) {
+//   return date.toLocaleDateString('en-US', {
+//     month: '2-digit',
+//     day: '2-digit',
+//     year: 'numeric'
+//   });
+// }
+
 const NewExercisePage = () => {
   const [exercise, setExercise] = useState({
-    exercise: '',
+    exerciseName: '',
     equipment: '',
     image: IMAGE_OPTIONS[0].value,
-    sets: '',
+    editMode: false,
+    workouts: [
+      {
+        // : formatDateToMMDDYYYY(new Date()),
+        date: new Date().toISOString(),
+        set: [
+          {
+            weight: 0,
+            reps: 10,
+          },
+        ],
+      },
+    ],
   });
   const [errors, setErrors] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState(null);
@@ -41,22 +62,22 @@ const NewExercisePage = () => {
     },
   });
 
-  const validateForm = () => {
-    const newErrors = {};
+  // const validateForm = () => {
+  //   const newErrors = {};
 
-    if (!exercise.exercise.trim()) {
-      newErrors.exercise = 'Exercise field is required.';
-    }
+  //   if (!exercise.exercise.trim()) {
+  //     newErrors.exercise = 'Exercise field is required.';
+  //   }
 
-    if (!exercise.sets.trim()) {
-      newErrors.sets = 'Sets field is required.';
-    }
+  //   if (!exercise.workouts.trim()) {
+  //     newErrors.workouts = 'Workouts field is required.';
+  //   }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // returns true if no errors
-  };
+  //   setErrors(newErrors);
+  //   return Object.keys(newErrors).length === 0; // returns true if no errors
+  // };
 
-  const currentDate = new Date().toLocaleDateString() + ' \u2611 \u2610 -- ';
+  // const currentDate = new Date().toLocaleDateString() + ' \u2611 \u2610 -- ';
 
   const handleChange = (e) => {
     setExercise({ ...exercise, [e.target.name]: e.target.value });
@@ -69,13 +90,57 @@ const NewExercisePage = () => {
     }
   };
 
+  const handleSetChange = (workoutIndex, setIndex, field, value) => {
+    setExercise((prevExercise) => {
+      const newWorkouts = [...prevExercise.workouts];
+      const updatedSet = { ...newWorkouts[workoutIndex].set[setIndex], [field]: value };
+      newWorkouts[workoutIndex].set[setIndex] = updatedSet;
+
+      return { ...prevExercise, workouts: newWorkouts };
+    });
+  };
+
+  const addNewSet = () => {
+    setExercise((prevExercise) => {
+      // Clone the current workouts array
+      const newWorkouts = [...prevExercise.workouts];
+
+      // Assuming there's always at least one workout, add a new set to the last workout
+      const lastWorkoutIndex = newWorkouts.length - 1;
+      newWorkouts[lastWorkoutIndex] = {
+        ...newWorkouts[lastWorkoutIndex],
+        set: [
+          ...newWorkouts[lastWorkoutIndex].set,
+          {
+            weight: 0,
+            reps: 10,
+          },
+        ],
+      };
+      console.log(newWorkouts);
+      return { ...prevExercise, workouts: newWorkouts };
+    });
+  };
+
+  // setExercise( exercise.map(prevExercise =>{
+  //   return(
+  //     ...prevExercise,
+  //       ...prevExercise[0].set,
+  //                         {
+  //         weight: 'new added 1lbs',
+  //         reps: 1,
+  //     },
+  //   )
+  // }))
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return; // stop here if there are validation errors because if validateFrom is false then that means there were errors. True means no errors.
-    }
+    // if (!validateForm()) {
+    //   return; // stop here if there are validation errors because if validateFrom is false then that means there were errors. True means no errors.
+    // }
     mutate(exercise);
+    console.log(exercise);
   };
 
   return (
@@ -90,8 +155,8 @@ const NewExercisePage = () => {
           <Form.Label>Exercise</Form.Label>
           <Form.Control
             type='text'
-            name='exercise'
-            placeholder='Exercise'
+            name='exerciseName'
+            placeholder='Exercise Name'
             onChange={handleChange}
           />
           {errors.exercise && <p style={{ color: 'red' }}>{errors.exercise}</p>}
@@ -117,18 +182,47 @@ const NewExercisePage = () => {
           </Form.Select>
         </Form.Group>
         <Form.Group>
-          <Form.Label>Sets</Form.Label>
-          <Form.Control
-            as='textarea'
-            rows={12}
-            name='sets'
-            placeholder='Sets'
-            defaultValue={currentDate}
-            onChange={handleChange}
-            required
-          />
-          {errors.sets && <p style={{ color: 'red' }}>{errors.sets}</p>}
+          <Form.Label>Workouts</Form.Label>
+          {exercise.workouts.map((workout, workoutIndex) => (
+            <div key={workoutIndex}>
+              {workout.set.map((set, setIndex) => (
+                <Row key={setIndex} className='align-items-center mb-3'>
+                  <Col xs='auto'>
+                    <Form.Control
+                      type='text'
+                      placeholder='Weight'
+                      value={set.weight}
+                      onChange={(e) =>
+                        handleSetChange(workoutIndex, setIndex, 'weight', e.target.value)
+                      }
+                    />
+                  </Col>
+                  <Col xs='auto' style={{ paddingLeft: 0, paddingRight: 10 }}>
+                    <Form.Label className='mb-0'>lbs</Form.Label>
+                  </Col>
+                  <Col xs='auto'>
+                    <Form.Control
+                      type='number'
+                      placeholder='Reps'
+                      value={set.reps}
+                      onChange={(e) =>
+                        handleSetChange(workoutIndex, setIndex, 'reps', e.target.value)
+                      }
+                    />
+                  </Col>
+                  <Col xs='auto' style={{ paddingLeft: 0, paddingRight: 10 }}>
+                    <Form.Label className='mb-0'>reps</Form.Label>
+                  </Col>
+                </Row>
+              ))}
+            </div>
+          ))}
+
+          <Button variant='secondary' onClick={addNewSet}>
+            Add New Set
+          </Button>
         </Form.Group>
+
         <Button variant='dark' type='submit'>
           Create
         </Button>
