@@ -57,10 +57,6 @@ const NewExercisePage = () => {
       newErrors.exerciseName = 'Exercise name is required.';
     }
 
-    if (!exercise.equipment.trim()) {
-      newErrors.equipment = 'Equipment is required.';
-    }
-
     setErrors(newErrors);
 
     // Form is valid if there are no entries in newErrors
@@ -158,9 +154,7 @@ const NewExercisePage = () => {
               name='equipment'
               placeholder='Equipment'
               onChange={handleChange}
-              isInvalid={!!errors.equipment}
             />
-            <Form.Control.Feedback type='invalid'>{errors.equipment}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group>
             <Form.Label>
