@@ -18,6 +18,10 @@ const IMAGE_OPTIONS = [
 ];
 
 const NewExercisePage = () => {
+  // Adjust the initial date to consider the time zone
+  const initialDate = new Date();
+  //initialDate.setHours(0, 0, 0, 0);  Set to start of day in local time zone
+  const adjustedInitialDate = initialDate.toISOString();
   const [exercise, setExercise] = useState({
     exerciseName: '',
     equipment: '',
@@ -25,7 +29,7 @@ const NewExercisePage = () => {
     editMode: false,
     workouts: [
       {
-        date: new Date().toISOString(),
+        date: adjustedInitialDate,
         set: [
           {
             weight: 0,
@@ -171,8 +175,8 @@ const NewExercisePage = () => {
           <Form.Group>
             <Form.Label>
               <strong>
-                Enter you first workout for{' '}
-                {new Date(exercise.workouts[0].date).toLocaleDateString()}
+                Enter you first workout for {new Date(exercise.workouts[0].date).toLocaleString()}
+                {console.log(new Date(exercise.workouts[0].date).toLocaleString())}
               </strong>
             </Form.Label>
             {exercise.workouts.map((workout, workoutIndex) => (

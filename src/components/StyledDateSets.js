@@ -1,5 +1,14 @@
 import React from 'react';
 
+function removeLeadingZero(str) {
+  // If the string starts with '0' and has more than one character, remove the leading '0'
+  if (str.startsWith('0') && str.length > 1) {
+    return str.substring(1);
+  }
+  // Otherwise, return the string as is
+  return str;
+}
+
 const StyledDateSets = ({ workouts }) => {
   if (!workouts || !Array.isArray(workouts)) {
     return <div>No workouts available.</div>;
@@ -19,11 +28,9 @@ const StyledDateSets = ({ workouts }) => {
             backgroundColor: 'rgb(190,190,190)',
           }}
         >
-          <strong style={{ marginRight: '10px', whiteSpace: 'nowrap', minWidth: '30px' }}>
-            {new Date(workout.date).toLocaleDateString('en-US', {
-              month: 'numeric',
-              day: 'numeric',
-            })}
+          <strong style={{ marginRight: '10px', whiteSpace: 'nowrap', minWidth: '40px' }}>
+            {removeLeadingZero(workout.date.substring(5, 7))}/
+            {removeLeadingZero(workout.date.substring(8, 10))}
           </strong>
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {workout.set.map((s, idx) => (

@@ -32,20 +32,16 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
   };
 
   const toLocalDate = (dateString) => {
-    // Create a new date object using the dateString
+    // Assuming dateString is in UTC format (from MongoDB)
     const date = new Date(dateString);
-    // Adjust the date object to account for the timezone offset
-    const userTimezoneOffset = date.getTimezoneOffset() * 60000;
-    // Convert back to local time by adding the timezone offset
-    const localDate = new Date(date.getTime() - userTimezoneOffset);
-    // Format to 'YYYY-MM-DD'
-    return localDate.toISOString().split('T')[0];
+    return date.toISOString().split('T')[0];
   };
 
   const handleDateChange = (workoutIndex, newValue) => {
-    const updatedWorkouts = [...editableExercise.workouts];
-
-    // Directly use the newValue for the date without converting to UTC
+    let converted = new Date(newValue).toISOString();
+    console.log(newValue);
+    console.log(converted);
+    let updatedWorkouts = [...editableExercise.workouts];
     updatedWorkouts[workoutIndex] = {
       ...updatedWorkouts[workoutIndex],
       date: newValue,
