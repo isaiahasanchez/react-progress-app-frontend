@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { fetchExercise } from '../api/apiService';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
+import FullPageStyledDateSets from '../components/FullPageStyledDateSets';
 
 const ExercisePage = () => {
   const { id } = useParams();
@@ -20,14 +21,7 @@ const ExercisePage = () => {
   });
 
   if (isLoading) return <LoadingSpinner />;
-
-  if (error) {
-    return (
-      <Container className='mt-4'>
-        <ErrorMessage status={error.response?.status} />
-      </Container>
-    );
-  }
+  if (error) return <ErrorMessage status={error.response?.status} />;
 
   return (
     <Container className='mt-4'>
@@ -37,10 +31,11 @@ const ExercisePage = () => {
           src={exercise?.image}
           alt={`Image of ${exercise?.exerciseName}`}
           style={{
-            objectFit: 'contain', // Maintains the aspect ratio
-            maxHeight: '250px', // Maximum height of the image
-            width: '100%', // Full width of the card
-            alignSelf: 'center', // Centers the image if it's not as wide as the card
+            objectFit: 'contain',
+            maxHeight: '20rem',
+            width: '100%',
+            alignSelf: 'center',
+            paddingTop: '1rem',
           }}
         />
         <Card.Body>
@@ -49,21 +44,9 @@ const ExercisePage = () => {
             Equipment: {exercise?.equipment}
           </Card.Subtitle>
           <Card.Text>Last Edited: {new Date(exercise?.lastDateEdited).toLocaleString()}</Card.Text>
-          <Card.Text style={{ whiteSpace: 'pre-line' }}>
-            Sets:
-            {exercise?.workouts.map((workout, index) => (
-              <div key={index}>
-                <strong>Date:</strong> {new Date(workout.date).toLocaleString()}
-                <ul>
-                  {workout.set.map((s, idx) => (
-                    <li key={idx}>
-                      Set {idx + 1}: {s.reps} reps, {s.weight} lbs
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </Card.Text>
+
+          <FullPageStyledDateSets workouts={exercise?.workouts} />
+
           <Link to={'/'}>
             <Button variant='dark'>Return to Home</Button>
           </Link>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StyledDateSets = ({ workouts }) => {
+const FullPageStyledDateSets = ({ workouts }) => {
   if (!workouts || !Array.isArray(workouts)) {
     return <div>No workouts available.</div>;
   }
@@ -14,16 +14,13 @@ const StyledDateSets = ({ workouts }) => {
             display: 'flex',
             alignItems: 'center',
             marginBottom: '10px',
-            borderRadius: '10px',
-            padding: '5px',
-            backgroundColor: 'rgb(190,190,190)',
+            borderRadius: '10px', // Rounded corners
+            padding: '5px', // Padding inside the container
+            backgroundColor: 'rgb(190,190,190)', // Background color
           }}
         >
-          <strong style={{ marginRight: '10px', whiteSpace: 'nowrap', minWidth: '30px' }}>
-            {new Date(workout.date).toLocaleDateString('en-US', {
-              month: 'numeric',
-              day: 'numeric',
-            })}
+          <strong style={{ marginRight: '10px', whiteSpace: 'nowrap' }}>
+            {new Date(workout.date).toLocaleDateString()}
           </strong>
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {workout.set.map((s, idx) => (
@@ -34,7 +31,7 @@ const StyledDateSets = ({ workouts }) => {
                   marginRight: '8px',
                 }}
               >
-                <strong></strong> {s.weight} x {s.reps}
+                <strong></strong> {s.weight}lbs x {s.reps} reps
               </div>
             ))}
           </div>
@@ -44,4 +41,4 @@ const StyledDateSets = ({ workouts }) => {
   );
 };
 
-export default StyledDateSets;
+export default FullPageStyledDateSets;

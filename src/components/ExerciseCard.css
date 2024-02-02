@@ -1,11 +1,36 @@
 .card {
   background: #444;
-  border: none;
-  border-radius: 10px; /* Rounded corners */
-  margin-bottom: 1.5rem; /* Space between cards */
 }
 
-.card-title,
-.card-text {
-  color: white;
+/* Responsive adjustments for extra small screens (phones) */
+@media (max-width: 576px) {
+  .form-fields {
+    width: 100%; /* Full width on small screens */
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+  .form-delete-workout {
+    font-size: 10px !important;
+  }
+
+  .form-delete-set {
+    width: auto; /* Auto width for delete button */
+    padding: 0.25rem 0.5rem; /* Smaller padding for delete button */
+  }
+
+  .lbs-reps {
+    font-size: 16px;
+    margin: 0;
+  }
+  .card-body {
+    padding: 5px !important;
+  }
+}
+
+/* Specific styles for larger screens - XL */
+@media (min-width: 1200px) {
+  .custom-card-width {
+    flex: 0 0 48%; /* Adjust the width of the card */
+    margin-right: 2%; /* Space between cards */
+  }
 }

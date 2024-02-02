@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useAuth } from '../contexts/authContext';
-import logoImage from '../components/progress-logo.png';
+import logoImage from '../components/logo-new.png';
 
 const NavBar = () => {
   const { currentUser, logout } = useAuth();
