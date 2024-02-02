@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { useAuth } from './contexts/authContext';
 import HomePage from './pages/HomePage';

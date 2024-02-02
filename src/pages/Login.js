@@ -7,9 +7,9 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [showSuccess, setShowSuccess] = useState(false); // New state for showing the success message
+  const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // Added this for accessing query parameters
+  const location = useLocation();
   const { login } = useAuth();
 
   useEffect(() => {
@@ -44,9 +44,12 @@ function Login() {
     <Container className='mt-5'>
       <Row className='justify-content-center'>
         <Col md={6}>
-          <Card>
-            <Card.Header as='h2'>Welcome to Progress Exercise Log! Please Login</Card.Header>
-            <Card.Body>
+          <Card style={{ backgroundColor: 'rgb(225 226 230)' }}>
+            <Card.Header className='text-center' as='h2'>
+              Welcome to Progress Exercise Log!
+            </Card.Header>
+            <Card.Title className='text-center mt-3 mb-0'>Please Login</Card.Title>
+            <Card.Body className='pt-0'>
               {showSuccess && (
                 <Alert variant='success'>
                   You have successfully registered with an account. Please login.

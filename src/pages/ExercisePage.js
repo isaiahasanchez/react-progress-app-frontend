@@ -1,13 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Card, Container } from 'react-bootstrap';
+import { Button, Card, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { fetchExercise } from '../api/apiService';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
+import FullPageStyledDateSets from '../components/FullPageStyledDateSets';
 
 const ExercisePage = () => {
-  // useParams() retrieves URL parameters from the current route, such as 'id', to fetch and display data for that specific route.
   const { id } = useParams();
 
   const {
@@ -20,45 +21,35 @@ const ExercisePage = () => {
   });
 
   if (isLoading) return <LoadingSpinner />;
-
-  if (error) {
-    return (
-      <Container className='mt-4'>
-        <ErrorMessage status={error.response?.status} />
-      </Container>
-    );
-  }
+  if (error) return <ErrorMessage status={error.response?.status} />;
 
   return (
     <Container className='mt-4'>
       <Card style={{ backgroundColor: 'rgb(225 226 230)' }}>
-        <div
+        <Card.Img
+          variant='top'
+          src={exercise?.image}
+          alt={`Image of ${exercise?.exerciseName}`}
           style={{
-            height: '300px',
-            width: '400px',
-            overflow: 'hidden',
+            objectFit: 'contain',
+            maxHeight: '20rem',
+            width: '100%',
+            alignSelf: 'center',
+            paddingTop: '1rem',
           }}
-        >
-          <Card.Img
-            className='img-fluid'
-            variant='top'
-            src={exercise?.image}
-            alt={exercise?.exercise}
-            style={{
-              objectFit: 'contain',
-              maxHeight: '100%',
-              maxWidth: '100%',
-            }}
-          />
-        </div>
+        />
         <Card.Body>
-          <Card.Title>{exercise?.exercise}</Card.Title>
+          <Card.Title>{exercise?.exerciseName}</Card.Title>
           <Card.Subtitle className='mb-2 text-muted'>
-            {' '}
             Equipment: {exercise?.equipment}
           </Card.Subtitle>
           <Card.Text>Last Edited: {new Date(exercise?.lastDateEdited).toLocaleString()}</Card.Text>
-          <Card.Text style={{ whiteSpace: 'pre-line' }}>Sets: {exercise?.sets}</Card.Text>
+
+          <FullPageStyledDateSets workouts={exercise?.workouts} />
+
+          <Link to={'/'}>
+            <Button variant='dark'>Return to Home</Button>
+          </Link>
         </Card.Body>
       </Card>
     </Container>

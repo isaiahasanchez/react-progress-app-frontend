@@ -1,128 +1,296 @@
-import React, { useState } from 'react';
-import { Card, Button, Form, Col } from 'react-bootstrap';
+import React, { useState, useRef } from 'react';
+import { Card, Button, Form, Container, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import '../styles.css';
-
-const StyledDateSets = ({ sets }) => {
-  const datePattern = /\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2} (AM|PM)/;
-  return sets.split('\n').map((line, index) => (
-    <span key={index}>
-      {datePattern.test(line) ? (
-        <>
-          <span style={{ fontWeight: '300' }}>{line.match(datePattern)[0]}</span>{' '}
-          {line.replace(datePattern, '').trim()}
-        </>
-      ) : (
-        line
-      )}
-      <br />
-    </span>
-  ));
-};
-
-const getLastFiveLines = (text) => {
-  const lines = text.trim().split('\n');
-  return lines.slice(Math.max(lines.length - 5, 0)).join('\n');
-};
+import StyledDateSets from './StyledDateSets';
+import './ExerciseCard.css';
 
 const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
   const [editMode, setEditMode] = useState(false);
   const [editableExercise, setEditableExercise] = useState(exercise);
+  const cardRef = useRef(null);
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
     if (!editMode) {
-      setEditableExercise(exercise); // Reset editable exercise to the current exercise data when entering edit mode
+      setEditableExercise(exercise); // Sets editableExercise to current exercise when entering edit mode
+    }
+    // Scroll the card into view after a slight delay to ensure the DOM has updated
+    setTimeout(() => {
+      cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 100);
+  };
+
+  const handleChange = (e, name) => {
+    setEditableExercise({ ...editableExercise, [name]: e.target.value });
+  };
+
+  const handleSetChange = (workoutIndex, setIndex, field, value) => {
+    const updatedWorkouts = [...editableExercise.workouts];
+    const updatedSet = { ...updatedWorkouts[workoutIndex].set[setIndex], [field]: value };
+    updatedWorkouts[workoutIndex].set[setIndex] = updatedSet;
+    setEditableExercise({ ...editableExercise, workouts: updatedWorkouts });
+  };
+
+  const toLocalDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  };
+
+  const handleDateChange = (workoutIndex, newValue) => {
+    const updatedWorkouts = [...editableExercise.workouts];
+
+    // Convert the date to local timezone date
+    const localDate = new Date(newValue + 'T00:00:00');
+    updatedWorkouts[workoutIndex] = {
+      ...updatedWorkouts[workoutIndex],
+      date: localDate.toISOString(),
+    };
+
+    setEditableExercise({ ...editableExercise, workouts: updatedWorkouts });
+  };
+
+  const startNewWorkout = () => {
+    // Find the last workout's last set
+    const lastWorkout = editableExercise.workouts[editableExercise.workouts.length - 1];
+    let lastSet = { weight: '', reps: '' };
+
+    if (lastWorkout && lastWorkout.set.length > 0) {
+      // Get the last set's weight and reps
+      lastSet = lastWorkout.set[lastWorkout.set.length - 1];
+    }
+
+    // Create a new workout with the last set's values
+    const newWorkout = {
+      date: new Date().toISOString(),
+      set: [{ weight: lastSet.weight, reps: lastSet.reps }],
+    };
+
+    // Add the new workout to the workouts array
+    setEditableExercise((prevExercise) => ({
+      ...prevExercise,
+      workouts: [...prevExercise.workouts, newWorkout],
+    }));
+    setTimeout(() => {
+      cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 100);
+  };
+
+  const addNewSet = (workoutIndex) => {
+    const updatedWorkouts = [...editableExercise.workouts];
+    const currentWorkout = updatedWorkouts[workoutIndex];
+
+    // Check if there are any sets in the current workout
+    if (currentWorkout.set.length > 0) {
+      // Get the last set's weight and reps
+      const lastSet = currentWorkout.set[currentWorkout.set.length - 1];
+      const newSet = { weight: lastSet.weight, reps: lastSet.reps }; // Use last set's values
+
+      // Add the new set to the current workout
+      updatedWorkouts[workoutIndex].set.push(newSet);
+    } else {
+      // If there are no sets, add a default new set
+      updatedWorkouts[workoutIndex].set.push({ weight: '', reps: '' });
+    }
+
+    setEditableExercise({ ...editableExercise, workouts: updatedWorkouts });
+
+    setTimeout(() => {
+      cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 100);
+  };
+
+  const handleDeleteWorkout = (workoutIndex) => {
+    const userConfirmed = window.confirm(`Are you sure you want to delete this workout?`);
+    if (userConfirmed) {
+      setEditableExercise((prevExercise) => ({
+        ...prevExercise,
+        workouts: prevExercise.workouts.filter((_, index) => index !== workoutIndex),
+      }));
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditableExercise({ ...editableExercise, [name]: value });
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // prevent the default behavior of adding a new line
-      const currentValue = e.target.value;
-      const currentPosition = e.target.selectionStart;
-
-      // Extract the last sets content (excluding the date)
-      const lastLine = currentValue.split('\n').pop();
-      const lastSetsContent = lastLine.split('--')[1]?.trim() || '';
-
-      // Append new date and last sets content
-      const newValue =
-        currentValue.slice(0, currentPosition) +
-        '\n' +
-        new Date().toLocaleDateString() +
-        ' -- ' +
-        lastSetsContent +
-        currentValue.slice(currentPosition);
-
-      setEditableExercise({ ...editableExercise, sets: newValue });
-    }
+  const handleDeleteSet = (workoutIndex, setIndex) => {
+    setEditableExercise((prevExercise) => {
+      const updatedWorkouts = [...prevExercise.workouts];
+      const updatedSets = updatedWorkouts[workoutIndex].set.filter(
+        (_, index) => index !== setIndex,
+      );
+      updatedWorkouts[workoutIndex] = { ...updatedWorkouts[workoutIndex], set: updatedSets };
+      return { ...prevExercise, workouts: updatedWorkouts };
+    });
   };
 
   const handleSaveChanges = () => {
     handleSave(exercise._id, editableExercise);
     setEditMode(false);
+
+    // Scroll back to the top of the page after saving a edit
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
 
-  const renderSets = () =>
-    editMode ? editableExercise.sets : getLastFiveLines(editableExercise.sets);
+  const getLastFiveWorkouts = (workouts) => {
+    // Return the last 5 workouts
+    return workouts.slice(-5);
+  };
 
   return (
     <Col xs={12} className='mb-4'>
-      <Card style={{ backgroundColor: 'rgb(225 226 230)', minWidth: '18rem' }}>
+      <Card
+        ref={cardRef}
+        style={{ backgroundColor: 'rgb(225 226 230)' }}
+        className='custom-card-width'
+      >
         {editMode ? (
-          <Form>
-            <Form.Group>
-              <Form.Label>Exercise</Form.Label>
-              <Form.Control
-                type='text'
-                name='exercise'
-                value={editableExercise.exercise}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Sets</Form.Label>
-              <Form.Control
-                as='textarea'
-                rows={5}
-                name='sets'
-                value={editableExercise.sets}
-                onChange={handleChange}
-                onKeyPress={handleKeyPress}
-              />
-            </Form.Group>
-            <Button variant='secondary' onClick={handleSaveChanges}>
-              Save Changes
-            </Button>
-          </Form>
+          <Container>
+            <Form>
+              <Form.Group>
+                <Form.Label>Exercise Name:</Form.Label>
+                <Form.Control
+                  type='text'
+                  value={editableExercise.exerciseName}
+                  onChange={(e) => handleChange(e, 'exerciseName')}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Equipment:</Form.Label>
+                <Form.Control
+                  type='text'
+                  value={editableExercise.equipment}
+                  onChange={(e) => handleChange(e, 'equipment')}
+                />
+              </Form.Group>
+
+              {editableExercise.workouts.map((workout, workoutIndex) => (
+                <div key={workoutIndex}>
+                  <Row
+                    className=' align-items-center justify-content-start'
+                    style={{ padding: '2rem 0 0.5rem 0' }}
+                  >
+                    <Col xs='3' style={{ paddingRight: '0' }}>
+                      <Form.Label className='form-dates' style={{ margin: '0' }}>
+                        <strong>Workout Date:</strong>
+                      </Form.Label>
+                    </Col>
+                    <Col style={{ padding: '0' }}>
+                      <Form.Control
+                        className='form-dates-fields'
+                        style={{ maxWidth: '10rem' }}
+                        type='date'
+                        placeholder='Date'
+                        value={toLocalDate(editableExercise.workouts[workoutIndex].date)}
+                        onChange={(e) => handleDateChange(workoutIndex, e.target.value)}
+                      />
+                    </Col>
+                    <Col>
+                      <Button
+                        className='form-delete-workout'
+                        variant='danger'
+                        onClick={() => handleDeleteWorkout(workoutIndex)}
+                      >
+                        Delete Workout
+                      </Button>
+                    </Col>
+                  </Row>
+
+                  {workout.set.map((set, setIndex) => (
+                    <Row key={setIndex} className='align-items-center mb-3'>
+                      <Col className='d-flex justify-content-center' xs='auto'>
+                        <Form.Label className='mb-0'>
+                          <strong>{setIndex + 1}</strong>
+                        </Form.Label>
+                      </Col>
+                      <Col className='form-fields' xs>
+                        <Form.Control
+                          type='number'
+                          placeholder='Weight'
+                          value={set.weight}
+                          onChange={(e) =>
+                            handleSetChange(workoutIndex, setIndex, 'weight', e.target.value)
+                          }
+                        />
+                      </Col>
+                      <Col xs='auto' className='d-flex justify-content-center'>
+                        <Form.Label className='mb-0 lbs-reps'>lbs</Form.Label>
+                      </Col>
+                      <Col className='form-fields' xs>
+                        <Form.Control
+                          type='number'
+                          placeholder='Reps'
+                          value={set.reps}
+                          onChange={(e) =>
+                            handleSetChange(workoutIndex, setIndex, 'reps', e.target.value)
+                          }
+                        />
+                      </Col>
+                      <Col xs='auto' className='d-flex justify-content-center'>
+                        <Form.Label className='mb-0 lbs-reps'>reps</Form.Label>
+                      </Col>
+                      <Col xs='auto' className='d-flex justify-content-end'>
+                        <Button
+                          className='form-delete-set'
+                          variant='danger'
+                          onClick={() => handleDeleteSet(workoutIndex, setIndex)}
+                        >
+                          X
+                        </Button>
+                      </Col>
+                    </Row>
+                  ))}
+
+                  <Button variant='secondary' onClick={() => addNewSet(workoutIndex)}>
+                    Add New Set
+                  </Button>
+                </div>
+              ))}
+              <Button variant='dark' onClick={startNewWorkout} className='mt-3'>
+                Add a New Workout
+              </Button>
+              <Button variant='primary' onClick={handleSaveChanges} className='mt-3'>
+                Save Changes
+              </Button>
+            </Form>
+          </Container>
         ) : (
           <Card.Body>
-            <Card.Title>{editableExercise.exercise}</Card.Title>
-            <Card.Text>{editableExercise.equipment}</Card.Text>
+            <Card.Title>{editableExercise.exerciseName}</Card.Title>
             <Card.Text>
-              Last Edited: {new Date(editableExercise.lastDateEdited).toLocaleString()}
+              <strong>Equipment: </strong>
+              {editableExercise.equipment}
             </Card.Text>
-            <Card.Subtitle>5 Most Recent Workouts</Card.Subtitle>
-            <Card.Text style={{ whiteSpace: 'pre-line' }}>
-              <StyledDateSets sets={renderSets()} />
-            </Card.Text>
-            <Link to={`/exercises/${exercise._id}`}>
-              <Button variant='dark' className='mr-2'>
-                Full History
-              </Button>
-            </Link>
-            <Button variant='danger' onClick={() => handleDelete(exercise._id)}>
-              Delete
-            </Button>
-            <Button variant='secondary' onClick={toggleEditMode}>
-              Edit to Add a New Workout
-            </Button>
+            <Card.Text> {new Date(editableExercise.lastDateEdited).toLocaleString()}</Card.Text>
+            <Card.Subtitle>Workouts</Card.Subtitle>
+            <StyledDateSets workouts={getLastFiveWorkouts(editableExercise.workouts)} />
+            <Row className='d-flex justify-content-start'>
+              <Col className='d-flex'>
+                <div style={{ paddingRight: '0.5rem' }}>
+                  <Link to={`/exercises/${exercise._id}`}>
+                    <Button variant='dark' className='mr-3' style={{ width: '6rem' }}>
+                      Full Info
+                    </Button>
+                  </Link>
+                </div>
+                <div style={{ paddingRight: '0.5rem' }}>
+                  <Button
+                    variant='secondary'
+                    style={{ width: '8rem' }}
+                    onClick={() => toggleEditMode(exercise._id)}
+                  >
+                    Edit
+                  </Button>
+                </div>
+                <Button
+                  className='mr-3'
+                  variant='danger'
+                  onClick={() => handleDelete(exercise._id)}
+                  style={{ width: '6rem' }}
+                >
+                  Delete
+                </Button>
+              </Col>
+            </Row>
           </Card.Body>
         )}
       </Card>
