@@ -1,3 +1,14 @@
 h1 {
   margin-bottom: 2rem;
 }
+
+.alert-container {
+  position: fixed; /* Keep it fixed on the screen */
+  top: 4%; /* Distance from the top of the viewport */
+  right: 5%; /* Distance from the right of the viewport */
+  z-index: 1000; /* Ensure it sits above other content */
+  /* Adjust the width as needed, using percentage for responsiveness */
+  white-space: nowrap; /* Prevents the content from wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis if text is too long */
+}

@@ -101,7 +101,11 @@ const HomePage = () => {
 
   return (
     <Container>
-      {alert.visible && <Alert variant={alert.type}>{alert.message}</Alert>}
+      {alert.visible && (
+        <div className='alert-container'>
+          <Alert variant={alert.type}>{alert.message}</Alert>
+        </div>
+      )}
       <Row className='justify-content-between align-items-center'>
         <Col xs='auto' className='m-2'>
           <h1 style={{ color: 'white' }}>Your Exercises</h1>
