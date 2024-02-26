@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Card, Button, Form, Container, Col, Row } from 'react-bootstrap';
+import { Card, Button, Form, Container, Col, Row, Alert } from 'react-bootstrap';
+import { BsCheckCircle } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import StyledDateSets from './StyledDateSets';
 import './ExerciseCard.css';
@@ -7,6 +8,7 @@ import './ExerciseCard.css';
 const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
   const [editMode, setEditMode] = useState(false);
   const [editableExercise, setEditableExercise] = useState(exercise);
+  const [showWorkoutAdded, setShowWorkoutAdded] = useState(false);
   const cardRef = useRef(null);
 
   const toggleEditMode = () => {
@@ -16,7 +18,7 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
     }
     // Scroll the card into view after a slight delay to ensure the DOM has updated
     setTimeout(() => {
-      cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
   };
 
@@ -32,7 +34,6 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
   };
 
   const toLocalDate = (dateString) => {
-    // Assuming dateString is in UTC format (from MongoDB)
     const date = new Date(dateString);
     return date.toISOString().split('T')[0];
   };
@@ -51,29 +52,29 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
   };
 
   const startNewWorkout = () => {
-    // Find the last workout's last set
-    const lastWorkout = editableExercise.workouts[editableExercise.workouts.length - 1];
+    // Finds the most recent workout's last set, if any
     let lastSet = { weight: '', reps: '' };
-
-    if (lastWorkout && lastWorkout.set.length > 0) {
-      // Get the last set's weight and reps
-      lastSet = lastWorkout.set[lastWorkout.set.length - 1];
+    if (editableExercise.workouts.length > 0) {
+      const lastWorkout = editableExercise.workouts[0]; // Grabs the first workout
+      if (lastWorkout.set.length > 0) {
+        lastSet = lastWorkout.set[lastWorkout.set.length - 1]; // Use the first set of the last workout as it's the most recent
+      }
     }
 
-    // Create a new workout with the last set's values
+    // Create a new workout with the last set's values or default if none
     const newWorkout = {
       date: new Date().toISOString(),
       set: [{ weight: lastSet.weight, reps: lastSet.reps }],
     };
 
-    // Add the new workout to the workouts array
+    setShowWorkoutAdded(true);
+    setTimeout(() => setShowWorkoutAdded(false), 1300);
+
+    // Prepend the new workout to the workouts array to maintain descending order
     setEditableExercise((prevExercise) => ({
       ...prevExercise,
-      workouts: [...prevExercise.workouts, newWorkout],
+      workouts: [newWorkout, ...prevExercise.workouts],
     }));
-    setTimeout(() => {
-      cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }, 100);
   };
 
   const addNewSet = (workoutIndex) => {
@@ -94,10 +95,6 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
     }
 
     setEditableExercise({ ...editableExercise, workouts: updatedWorkouts });
-
-    setTimeout(() => {
-      cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }, 100);
   };
 
   const handleDeleteWorkout = (workoutIndex) => {
@@ -134,7 +131,7 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
 
   const getLastFiveWorkouts = (workouts) => {
     // Return the last 5 workouts
-    return workouts.slice(-5);
+    return workouts.slice(0, 5);
   };
 
   return (
@@ -163,12 +160,34 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
                   onChange={(e) => handleChange(e, 'equipment')}
                 />
               </Form.Group>
+              <Button variant='dark' onClick={startNewWorkout} className='mt-3'>
+                + Add a New Workout
+              </Button>
+              <Button variant='primary' onClick={handleSaveChanges} className='mt-3'>
+                Save Changes
+              </Button>
+              <Col
+                style={{
+                  padding: '0.5rem 0 0 0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 'auto',
+                }}
+              >
+                {showWorkoutAdded && (
+                  <Alert variant='success'>
+                    <BsCheckCircle style={{ color: 'green', marginRight: '10px' }} />
+                    Added today's workout
+                  </Alert>
+                )}
+              </Col>
 
               {editableExercise.workouts.map((workout, workoutIndex) => (
-                <div key={workoutIndex}>
+                <div key={workoutIndex} style={{ padding: '0.5rem 0 2rem 0' }}>
                   <Row
                     className=' align-items-center justify-content-start'
-                    style={{ padding: '2rem 0 0.5rem 0' }}
+                    style={{ padding: '0.5rem 0 0.5rem 0' }}
                   >
                     <Col xs='3' style={{ paddingRight: '0' }}>
                       <Form.Label className='form-dates' style={{ margin: '0' }}>
@@ -246,12 +265,6 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
                   </Button>
                 </div>
               ))}
-              <Button variant='dark' onClick={startNewWorkout} className='mt-3'>
-                Add a New Workout
-              </Button>
-              <Button variant='primary' onClick={handleSaveChanges} className='mt-3'>
-                Save Changes
-              </Button>
             </Form>
           </Container>
         ) : (

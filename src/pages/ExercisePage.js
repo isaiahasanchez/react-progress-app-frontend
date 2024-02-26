@@ -17,7 +17,16 @@ const ExercisePage = () => {
     isLoading,
   } = useQuery({
     queryKey: ['exercise', id],
-    queryFn: () => fetchExercise(id),
+    queryFn: async () => {
+      const exerciseData = await fetchExercise(id);
+
+      // Check if workouts exist and sort them by date in descending order if they do
+      if (exerciseData.workouts) {
+        exerciseData.workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
+      }
+
+      return exerciseData;
+    },
   });
 
   if (isLoading) return <LoadingSpinner />;

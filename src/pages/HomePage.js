@@ -34,7 +34,7 @@ const HomePage = () => {
 
       // For each exercise, sort its workouts by date
       sortedExercises.forEach((exercise) => {
-        exercise.workouts.sort((a, b) => new Date(a.date) - new Date(b.date));
+        exercise.workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
       });
 
       return sortedExercises.map((exercise) => ({ ...exercise, editMode: false }));
@@ -62,6 +62,7 @@ const HomePage = () => {
     onSuccess: () => {
       // After a successful update, invalidate and refetch exercises
       queryClient.invalidateQueries(['exercises']);
+      queryClient.refetchQueries(['exercises']);
       showAlert('success', 'Exercise updated successfully.');
     },
     onError: (error) => {
