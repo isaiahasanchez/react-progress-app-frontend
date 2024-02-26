@@ -123,7 +123,7 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
     setEditMode(false);
 
     // Scroll back to the top of the page after saving a edit
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   };
 
   const getLastFiveWorkouts = (workouts) => {
