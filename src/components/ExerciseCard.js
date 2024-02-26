@@ -158,7 +158,7 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
                 />
               </Form.Group>
               <Button variant='dark' onClick={startNewWorkout} className='mt-3'>
-                + Add a New Workout
+                + Add New Workout
               </Button>
               <Button variant='primary' onClick={handleSaveChanges} className='mt-3'>
                 Save Changes
