@@ -61,7 +61,7 @@ const HomePage = () => {
     mutationFn: updateExercise,
     onSuccess: () => {
       // After a successful update, invalidate and refetch exercises
-      // queryClient.invalidateQueries(['exercises']);
+      queryClient.invalidateQueries(['exercises']);
       showAlert('success', 'Exercise updated successfully.');
     },
     onError: (error) => {
