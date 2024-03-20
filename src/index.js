@@ -10,7 +10,9 @@ const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  // Strict mode to help highlight potential problems in react and to keep best practices with things like components etc.
   <React.StrictMode>
+    {/* React query to set up app with React query to manage server state. React query helps with performance (caching) and reduced boilerplate */}
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <App />

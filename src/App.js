@@ -1,5 +1,6 @@
 import React from 'react';
 import './styles.css';
+// shortened to Router for brevity
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { useAuth } from './contexts/authContext';
 import HomePage from './pages/HomePage';
@@ -12,6 +13,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
+  // If loading is true (indicating an ongoing authentication process), display the LoadingSpinner. This prevents rendering the main app UI until the authentication state is fully resolved
   const { loading } = useAuth();
   if (loading) {
     return <LoadingSpinner />;
@@ -24,6 +26,7 @@ function App() {
         <Route
           path='/'
           element={
+            // Protected routes to make sure certain pages are only Available to authenticated users
             <ProtectedRoute>
               <HomePage />
             </ProtectedRoute>
