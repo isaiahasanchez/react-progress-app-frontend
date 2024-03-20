@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
       try {
         const response = await axios.get(`${API_BASE_URL}/current-user`, { withCredentials: true });
         setCurrentUser(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error('Failed to fetch current user', error);
       } finally {

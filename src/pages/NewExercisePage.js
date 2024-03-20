@@ -20,12 +20,12 @@ const IMAGE_OPTIONS = [
 const NewExercisePage = () => {
   // Adjust the initial date to consider the time zone
   const initialDate = new Date();
-  //initialDate.setHours(0, 0, 0, 0);  Set to start of day in local time zone
+
   const adjustedInitialDate = initialDate.toISOString();
   const [exercise, setExercise] = useState({
     exerciseName: '',
     equipment: '',
-    image: IMAGE_OPTIONS[0].value,
+    image: null,
     editMode: false,
     workouts: [
       {
@@ -68,6 +68,7 @@ const NewExercisePage = () => {
   };
 
   const handleChange = (e) => {
+    // Set exercise update State using spread syntax This can be done because this is based on user input of a new object and not on previous date, whereas set errors uses a functional updating in order to have the most recent picture of the error state
     setExercise({ ...exercise, [e.target.name]: e.target.value });
     // Clearing respective error when value changes
     if (errors[e.target.name]) {

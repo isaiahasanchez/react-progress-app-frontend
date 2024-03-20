@@ -23,6 +23,7 @@ const NavBar = () => {
           <img src={logoImage} alt='Progress Exercise Log' height='50'></img>{' '}
         </Navbar.Brand>
       </LinkContainer>
+      {/* From react bootstrap the toggle and collapse, provide the hamburger button that hides the links on the NAV bar, when the screen becomes a certain size */}
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
       <Navbar.Collapse id='basic-navbar-nav'>
         <Nav className='mr-auto'>
