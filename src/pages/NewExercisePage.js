@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { Card, Form, Button, Container, Alert, Row, Col } from 'react-bootstrap';
@@ -41,6 +41,7 @@ const NewExercisePage = () => {
   });
   const [errors, setErrors] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState(null);
+  const [scrollTrigger, setScrollTrigger] = useState(0);
 
   const navigate = useNavigate();
 
@@ -54,6 +55,15 @@ const NewExercisePage = () => {
       setFeedbackMessage('Error creating exercise. Please try again later.');
     },
   });
+
+  useEffect(() => {
+    // function to scroll the page when adding a new set. done like this since its a side effect want to keep seperate from other functions like the button function.
+    if (scrollTrigger > 0) {
+      // Makes sure we don't scroll on the initial render
+      window.scrollBy(0, 100);
+    }
+    // Ensure this effect runs only when scrollTrigger changes
+  }, [scrollTrigger]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -112,6 +122,7 @@ const NewExercisePage = () => {
 
       return { ...prevExercise, workouts: newWorkouts };
     });
+    setScrollTrigger((prevTrigger) => prevTrigger + 1);
   };
 
   const handleSubmit = (e) => {
