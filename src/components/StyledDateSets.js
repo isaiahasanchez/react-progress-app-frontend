@@ -41,7 +41,7 @@ const StyledDateSets = ({ workouts }) => {
                   marginRight: '8px',
                 }}
               >
-                <strong></strong> {s.weight} x {s.reps}
+                {s.weight > 0 ? `${s.weight} x ${s.reps}` : `BW x ${s.reps}`}
               </div>
             ))}
           </div>
