@@ -18,10 +18,10 @@ const IMAGE_OPTIONS = [
 ];
 
 const NewExercisePage = () => {
-  // Adjust the initial date to consider the time zone
   const initialDate = new Date();
-
   const adjustedInitialDate = initialDate.toISOString();
+  const navigate = useNavigate();
+
   const [exercise, setExercise] = useState({
     exerciseName: '',
     equipment: '',
@@ -42,8 +42,6 @@ const NewExercisePage = () => {
   const [errors, setErrors] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState(null);
   const [scrollTrigger, setScrollTrigger] = useState(0);
-
-  const navigate = useNavigate();
 
   const { mutate } = useMutation({
     mutationFn: createExercise,
