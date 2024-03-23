@@ -51,6 +51,7 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
     setEditableExercise({ ...editableExercise, workouts: updatedWorkouts });
   };
 
+  //adds a new workout
   const startNewWorkout = () => {
     // Finds the most recent workout's last set, if any
     let lastSet = { weight: '', reps: '' };
