@@ -1,6 +1,10 @@
 .card {
   background: #444;
 }
+#workouts-subtitle {
+  display: flex;
+  justify-content: center;
+}
 
 /* Responsive adjustments for extra small screens (phones) */
 @media (max-width: 576px) {
