@@ -41,7 +41,13 @@ const StyledDateSets = ({ workouts }) => {
                   marginRight: '8px',
                 }}
               >
-                {s.weight > 0 ? `${s.weight} x ${s.reps}` : `BW x ${s.reps}`}
+                {s.weight > 0 && idx === workout.set.length - 1
+                  ? `${s.weight}lbs x ${s.reps}`
+                  : s.weight > 0
+                  ? `${s.weight}lbs x ${s.reps},`
+                  : s.weight === 0 && idx === workout.set.length - 1
+                  ? `BW x ${s.reps}`
+                  : `BW x ${s.reps},`}
               </div>
             ))}
           </div>
