@@ -275,7 +275,9 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
             <Card.Subtitle id='workouts-subtitle'>
               <strong>Workouts</strong>
             </Card.Subtitle>
-            <Card.Subtitle>Date:</Card.Subtitle>
+            <Card.Subtitle>
+              <strong>Date:</strong>
+            </Card.Subtitle>
             <StyledDateSets workouts={getLastFiveWorkouts(editableExercise.workouts)} />
             <Row className='d-flex justify-content-start'>
               <Col className='d-flex'>

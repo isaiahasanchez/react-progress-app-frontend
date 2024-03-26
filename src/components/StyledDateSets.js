@@ -37,7 +37,7 @@ const StyledDateSets = ({ workouts }) => {
               <div
                 key={idx}
                 style={{
-                  minWidth: '60px',
+                  minWidth: '85px',
                   marginRight: '8px',
                 }}
               >
