@@ -193,7 +193,7 @@ const NewExercisePage = () => {
               <div key={workoutIndex}>
                 {workout.set.map((set, setIndex) => (
                   <Row key={setIndex} className='align-items-center mb-3'>
-                    <Col xs='3'>
+                    <Col xs='4'>
                       <Form.Control
                         type='text'
                         placeholder='Weight'
@@ -206,7 +206,7 @@ const NewExercisePage = () => {
                     <Col xs='auto' style={{ paddingLeft: 0, paddingRight: 10 }}>
                       <Form.Label className='mb-0'>lbs</Form.Label>
                     </Col>
-                    <Col xs='3'>
+                    <Col xs='4'>
                       <Form.Control
                         type='number'
                         placeholder='Reps'
