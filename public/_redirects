@@ -1,6 +1,6 @@
 # Redirect API requests to an external server. This setup creates a proxy to bypass CORS issues, making Netlify treat these requests as if originating from the same server.
 # For more details, refer to Netlify's documentation on redirects: https://docs.netlify.com/routing/redirects/
-/api/*     https://cute-gray-sheep-tam.cyclic.cloud/api/:splat      200
+/api/*     https://react-progress-app-backend.vercel.app/api/:splat      200
 
 # Redirect all other requests to index.html for client-side routing handling.
 /*    /index.html   200
