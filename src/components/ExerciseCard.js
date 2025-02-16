@@ -1,3 +1,4 @@
+// ExerciseCard.jsx
 import React, { useState, useRef } from 'react';
 import { Card, Button, Form, Container, Col, Row, Alert } from 'react-bootstrap';
 import { BsCheckCircle } from 'react-icons/bs';
@@ -11,12 +12,21 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
   const [showWorkoutAdded, setShowWorkoutAdded] = useState(false);
   const cardRef = useRef(null);
 
+  const toLocalDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    // Use UTC components so that "2025-02-15T00:00:00.000Z" becomes "2025-02-15"
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const toggleEditMode = () => {
     setEditMode(!editMode);
     if (!editMode) {
-      setEditableExercise(exercise); // Sets editableExercise to current exercise when entering edit mode
+      setEditableExercise(exercise);
     }
-    // Scroll the card into view after a slight delay to ensure the DOM has updated
     setTimeout(() => {
       cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
@@ -33,68 +43,51 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
     setEditableExercise({ ...editableExercise, workouts: updatedWorkouts });
   };
 
-  const toLocalDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toISOString().split('T')[0];
-  };
-
-  const handleDateChange = (workoutIndex, newValue) => {
-    let converted = new Date(newValue).toISOString();
-    console.log(newValue);
-    console.log(converted);
-    let updatedWorkouts = [...editableExercise.workouts];
-    updatedWorkouts[workoutIndex] = {
-      ...updatedWorkouts[workoutIndex],
-      date: newValue,
-    };
-
-    setEditableExercise({ ...editableExercise, workouts: updatedWorkouts });
-  };
-
-  //adds a new workout
   const startNewWorkout = () => {
-    // Finds the most recent workout's last set, if any
     let lastSet = { weight: '', reps: '' };
     if (editableExercise.workouts.length > 0) {
-      const lastWorkout = editableExercise.workouts[0]; // Grabs the first workout
+      const lastWorkout = editableExercise.workouts[0];
       if (lastWorkout.set.length > 0) {
-        lastSet = lastWorkout.set[lastWorkout.set.length - 1]; // Use the first set of the last workout as it's the most recent
+        lastSet = lastWorkout.set[lastWorkout.set.length - 1];
       }
     }
 
-    // Create a new workout with the last set's values or default if none
+    const today = new Date().toLocaleDateString('en-CA');
+
     const newWorkout = {
-      date: new Date().toISOString(),
+      date: today,
       set: [{ weight: lastSet.weight, reps: lastSet.reps }],
     };
 
     setShowWorkoutAdded(true);
     setTimeout(() => setShowWorkoutAdded(false), 1300);
 
-    // Prepend the new workout to the workouts array to maintain descending order
     setEditableExercise((prevExercise) => ({
       ...prevExercise,
       workouts: [newWorkout, ...prevExercise.workouts],
     }));
   };
 
+  const handleDateChange = (workoutIndex, newValue) => {
+    const updatedWorkouts = [...editableExercise.workouts];
+    updatedWorkouts[workoutIndex] = {
+      ...updatedWorkouts[workoutIndex],
+      date: newValue,
+    };
+    setEditableExercise({ ...editableExercise, workouts: updatedWorkouts });
+  };
+
   const addNewSet = (workoutIndex) => {
     const updatedWorkouts = [...editableExercise.workouts];
     const currentWorkout = updatedWorkouts[workoutIndex];
 
-    // Check if there are any sets in the current workout
     if (currentWorkout.set.length > 0) {
-      // Get the last set's weight and reps
       const lastSet = currentWorkout.set[currentWorkout.set.length - 1];
-      const newSet = { weight: lastSet.weight, reps: lastSet.reps }; // Use last set's values
-
-      // Add the new set to the current workout
+      const newSet = { weight: lastSet.weight, reps: lastSet.reps };
       updatedWorkouts[workoutIndex].set.push(newSet);
     } else {
-      // If there are no sets, add a default new set
       updatedWorkouts[workoutIndex].set.push({ weight: '', reps: '' });
     }
-
     setEditableExercise({ ...editableExercise, workouts: updatedWorkouts });
   };
 
@@ -122,13 +115,10 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
   const handleSaveChanges = () => {
     handleSave(exercise._id, editableExercise);
     setEditMode(false);
-
-    // Scroll back to the top of the page after saving a edit
     setTimeout(() => window.scrollTo(0, 0), 100);
   };
 
   const getLastFiveWorkouts = (workouts) => {
-    // Return the last 5 workouts
     return workouts.slice(0, 5);
   };
 
@@ -184,7 +174,7 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
               {editableExercise.workouts.map((workout, workoutIndex) => (
                 <div key={workoutIndex} style={{ padding: '0.5rem 0 2rem 0' }}>
                   <Row
-                    className=' align-items-center justify-content-start'
+                    className='align-items-center justify-content-start'
                     style={{ padding: '0.5rem 0 0.5rem 0' }}
                   >
                     <Col xs='3' style={{ paddingRight: '0' }}>
@@ -198,7 +188,7 @@ const ExerciseCard = ({ exercise, handleSave, handleDelete }) => {
                         style={{ maxWidth: '10rem' }}
                         type='date'
                         placeholder='Date'
-                        value={toLocalDate(editableExercise.workouts[workoutIndex].date)}
+                        value={toLocalDate(workout.date)}
                         onChange={(e) => handleDateChange(workoutIndex, e.target.value)}
                       />
                     </Col>

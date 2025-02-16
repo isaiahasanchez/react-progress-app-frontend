@@ -1,11 +1,10 @@
+// StyledDateSets.jsx
 import React from 'react';
 
 function removeLeadingZero(str) {
-  // If the string starts with '0' and has more than one character, remove the leading '0'
   if (str.startsWith('0') && str.length > 1) {
     return str.substring(1);
   }
-  // Otherwise, return the string as is
   return str;
 }
 

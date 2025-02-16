@@ -17,9 +17,16 @@ const IMAGE_OPTIONS = [
   { label: 'Pull Up', value: '/images/pull-up.jpeg' },
 ];
 
+// Helper: Parse a "YYYY-MM-DD" string as a local Date object.
+const parseLocalDateString = (dateString) => {
+  if (!dateString) return new Date();
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
 const NewExercisePage = () => {
-  const initialDate = new Date();
-  const adjustedInitialDate = initialDate.toISOString();
+  // Create initial date as a local date string in "YYYY-MM-DD" format.
+  const initialDate = new Date().toLocaleDateString('en-CA');
   const navigate = useNavigate();
 
   const [exercise, setExercise] = useState({
@@ -29,7 +36,7 @@ const NewExercisePage = () => {
     editMode: false,
     workouts: [
       {
-        date: adjustedInitialDate,
+        date: initialDate, // e.g. "2025-02-15"
         set: [
           {
             weight: 0,
@@ -39,6 +46,7 @@ const NewExercisePage = () => {
       },
     ],
   });
+
   const [errors, setErrors] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState(null);
   const [scrollTrigger, setScrollTrigger] = useState(0);
@@ -55,12 +63,9 @@ const NewExercisePage = () => {
   });
 
   useEffect(() => {
-    // function to scroll the page when adding a new set. done like this since its a side effect want to keep seperate from other functions like the button function.
     if (scrollTrigger > 0) {
-      // Makes sure we don't scroll on the initial render
       window.scrollBy(0, 100);
     }
-    // Ensure this effect runs only when scrollTrigger changes
   }, [scrollTrigger]);
 
   const validateForm = () => {
@@ -68,17 +73,12 @@ const NewExercisePage = () => {
     if (!exercise.exerciseName.trim()) {
       newErrors.exerciseName = 'Exercise name is required.';
     }
-
     setErrors(newErrors);
-
-    // Form is valid if there are no entries in newErrors
     return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (e) => {
-    // Set exercise update State using spread syntax This can be done because this is based on user input of a new object and not on previous date, whereas set errors uses a functional updating in order to have the most recent picture of the error state
     setExercise({ ...exercise, [e.target.name]: e.target.value });
-    // Clearing respective error when value changes
     if (errors[e.target.name]) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -92,7 +92,6 @@ const NewExercisePage = () => {
       const newWorkouts = [...prevExercise.workouts];
       const updatedSet = { ...newWorkouts[workoutIndex].set[setIndex], [field]: value };
       newWorkouts[workoutIndex].set[setIndex] = updatedSet;
-
       return { ...prevExercise, workouts: newWorkouts };
     });
   };
@@ -104,15 +103,11 @@ const NewExercisePage = () => {
       const currentWorkout = newWorkouts[lastWorkoutIndex];
 
       let newSet = { weight: '', reps: '' };
-
-      // Check if there are any sets in the current workout
       if (currentWorkout.set.length > 0) {
-        // Get the last set's weight and reps
         const lastSet = currentWorkout.set[currentWorkout.set.length - 1];
-        newSet = { weight: lastSet.weight, reps: lastSet.reps }; // Use last set's values
+        newSet = { weight: lastSet.weight, reps: lastSet.reps };
       }
 
-      // Add the new set to the current workout
       newWorkouts[lastWorkoutIndex] = {
         ...currentWorkout,
         set: [...currentWorkout.set, newSet],
@@ -125,10 +120,7 @@ const NewExercisePage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return; // stop here if there are validation errors because if validateFrom is false then that means there were errors. True means no errors.
-    }
+    if (!validateForm()) return;
     mutate(exercise);
   };
 
@@ -146,6 +138,7 @@ const NewExercisePage = () => {
               {feedbackMessage}
             </Alert>
           )}
+
           <Form.Group>
             <Form.Label>
               <strong>Exercise</strong>
@@ -159,6 +152,7 @@ const NewExercisePage = () => {
             />
             <Form.Control.Feedback type='invalid'>{errors.exerciseName}</Form.Control.Feedback>
           </Form.Group>
+
           <Form.Group>
             <Form.Label>
               <strong>Equipment</strong>
@@ -170,25 +164,28 @@ const NewExercisePage = () => {
               onChange={handleChange}
             />
           </Form.Group>
+
           <Form.Group>
             <Form.Label>
               <strong>Select an Image</strong>
             </Form.Label>
             <Form.Select name='image' onChange={handleChange}>
-              {IMAGE_OPTIONS.map((imgOption, index) => (
+              {IMAGE_OPTIONS.map((imgOption) => (
                 <option key={imgOption.value} value={imgOption.value}>
                   {imgOption.label}
                 </option>
               ))}
             </Form.Select>
           </Form.Group>
+
           <Form.Group>
             <Form.Label>
               <strong>
-                Enter you first workout for {new Date(exercise.workouts[0].date).toLocaleString()}
-                {console.log(new Date(exercise.workouts[0].date).toLocaleString())}
+                Enter your first workout for{' '}
+                {parseLocalDateString(exercise.workouts[0].date).toLocaleDateString()}
               </strong>
             </Form.Label>
+
             {exercise.workouts.map((workout, workoutIndex) => (
               <div key={workoutIndex}>
                 {workout.set.map((set, setIndex) => (
